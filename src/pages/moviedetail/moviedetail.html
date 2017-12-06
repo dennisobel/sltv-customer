@@ -1,0 +1,72 @@
+<ion-content padding class="no-scroll" style="background-image:{{base_url}}{{backdrop_sizes}}{{backdrop}};">	
+	<!--[style.backgroundImage]="'url(' + poster +')'"-->
+	<ion-card padding id="one" >
+		<div id="header" style="background-color:#2E4600; height:100px; width:250px;">
+			<ion-row>
+				<ion-col col-7>
+					<div >			
+						<p style="color: #021C1E;"><strong>::{{title}}</strong></p>			
+						<p style="font-size: 1.2rem;color: #db9501;"><strong>Rating:{{rating}}</strong></p>
+					</div>
+					<button (click)="selectSeason()" style="font-size:1.3rem" ion-button small outline color="blueblack">
+						<ion-icon name="basket"></ion-icon>
+						Pick Season
+					</button>
+				</ion-col>
+				
+				<ion-col col-5>
+					<div id="two">
+						<!-- <img src={{poster}}> -->
+						<img src={{base_url}}{{poster_sizes}}{{poster}} ngDefaultControl>
+					</div>
+				</ion-col>
+			</ion-row>	
+		</div>	
+
+		<div>
+		<br>
+			<ion-toolbar style="width:250px;" no-border-top>
+				<ion-segment [(ngModel)]="movdet" color="forestgreen" style="font-size: 0.9rem">
+					<ion-segment-button value="storyline">
+						<p style="font-size: 1.3rem; color: #db9501;"><strong>Storyline</strong></p>
+					</ion-segment-button>
+					<ion-segment-button value="similar">
+						<p style="font-size: 1.3rem; color: #db9501;"><strong>Similar</strong></p>
+					</ion-segment-button>
+				</ion-segment>
+			</ion-toolbar>
+		</div>	
+
+		<div [ngSwitch]="movdet">
+			<div *ngSwitchCase="'storyline'" ngSelected="selected" style="width:250px;">
+				<br>
+				<p ion-scroll scrollY="true" style="font-size: 1.2rem; color: #db9501;"><strong>{{storyline}}</strong>
+				</p>			
+			</div>
+			<div *ngSwitchCase="'similar'">		
+				<ion-list>	
+				<ion-item *ngFor="let similar of similar" (tap)="movieModal(get)" (press)="addToPool(similar)">		         
+		          <ion-row>
+		            <ion-col col-4>
+		              <div>
+		                <img [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{similar.poster_path}} ngDefaultControl>
+		              </div>
+		            </ion-col>
+		            <ion-col col-8>
+		              <div>
+		                <p style="color:#021C1E;"><strong>{{similar.name}}</strong></p>
+		                <p style="font-size:1rem; color: #db9501;"><strong>First Air Date:{{similar.first_air_date}}</strong></p>
+		                <hr>			                
+		              </div>
+		            </ion-col>
+		          </ion-row>	
+		         </ion-item>		         
+		      </ion-list>					
+			</div>
+		</div>
+	</ion-card>
+	
+	<ion-fab left top>
+    	<button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+  	</ion-fab>
+</ion-content>

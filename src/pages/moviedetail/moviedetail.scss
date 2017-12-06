@@ -1,0 +1,33 @@
+page-moviedetail {	
+	ion-card{
+		height:490px;
+		position:relative;
+	}
+
+	ion-card,
+	.one{
+		
+		
+	}
+
+	.one,
+	img{
+		position:absolute;
+		width:100px;
+		height:100px;	 
+		right:0;  
+		top:0; 	
+	}
+
+	header{		
+		height:100px;
+	}
+
+	.no-scroll .scroll-content{
+    	overflow: hidden;
+	}
+
+	
+
+	
+}

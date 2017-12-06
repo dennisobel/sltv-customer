@@ -1,5 +1,6 @@
 {
   "name": "SLTV",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "e19be0ef",
+  "type": "ionic-angular",
+  "integrations": {}
 }

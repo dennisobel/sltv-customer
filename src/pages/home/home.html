@@ -1,18 +1,75 @@
-<ion-header>
-  <ion-navbar>
+<ion-header #head>
+  <ion-navbar color="forestgreen">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+    </button> 
+     <ion-toolbar>
+        <ion-searchbar [(ngModel)]="searchTerm" (search)="getItems()" placeholder="Search Tv Shows"></ion-searchbar>  
+      </ion-toolbar>  
+  </ion-navbar>  
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content no-padding hideheader [header]="head"> 
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <ion-toolbar color="forestgreen" [(ngModel)]="listmovies">
+      <ion-segment color="blueblack" style="font-size:1.3rem" no-border-bottom>
+        <ion-segment-button value="popular">
+          Popular
+        </ion-segment-button>
+        <ion-segment-button value="pool">
+          Pool
+        </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>
+  
+  <div [ngSwitch]="listmovies">
+    <div *ngSwitchCase="'popular'">
+      <ion-list *ngFor="let get of popularTvShows">
+      <ion-card (tap)="movieModal(get)" (press)="addToPool(get)">    
+          <ion-row>
+            <ion-col col-4>
+              <div>
+                <img [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div>
+                <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+                <p style="font-size:1rem; color: #db9501;"><strong>First Air Date:{{get.first_air_date}}</strong></p>
+                <hr>
+                <!-- <p style="font-size:1.1rem; color: #db9501;"><strong>{{get.genre_ids}}</strong></p> -->
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card>  
+      </ion-list>
+    </div>
+    
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+    <div *ngSwitchCase="'pool'">
+      <p text-center style="font-size: 1.2rem; color:#021C1E"><strong>Pool Films</strong></p>
+      <ion-list *ngFor="let p of poollist">
+        <ion-card>
+          <ion-row>
+            <ion-col col-4>
+              <div>
+                <img src={{p.posterurl}}>
+              </div>
+            </ion-col>
+            <ion-col col-8>
+              <div>
+                
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </ion-list>
+    </div>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
