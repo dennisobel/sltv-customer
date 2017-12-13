@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button> 
      <ion-toolbar>
-        <ion-searchbar [(ngModel)]="searchTerm" (search)="getItems()" placeholder="Search Tv Shows"></ion-searchbar>  
+        <ion-searchbar [(ngModel)]="searchTerm" (search)="getItems()" placeholder="Search Movies"></ion-searchbar>  
       </ion-toolbar>  
   </ion-navbar>  
 </ion-header>
@@ -24,31 +24,31 @@
   
   <div [ngSwitch]="listmovies">
     <div *ngSwitchCase="'popular'">
-      <ion-list *ngFor="let get of popularTvShows">
-        <ion-card (click)="seasonsModal(get)">
+      <ion-list *ngFor="let get of popularMovies">
+        <ion-card>
           <ion-row>
             <ion-col col-5>
               <img [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
             </ion-col>
             <ion-col col-7>
-              <p style="font-size:1.2rem; color: #db9501;"><strong>Premier:{{get.first_air_date}}</strong></p>
+              <p style="font-size:1.2rem; color: #db9501;"><strong>Premier:{{get.release_date}}</strong></p>
               <ion-badge color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>{{get.vote_average}}</strong></ion-badge>
 
-              <!-- <ion-row>
+              <ion-row>
                 <ion-col col-6>
-                  <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block><ion-icon name="basket">Cart</ion-icon></button>
+                  <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToCart(get)"><ion-icon name="basket">Cart</ion-icon></button>
                 </ion-col>
                 <ion-col col-6>
-                  <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block>Wishlist</button>
+                  <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToWishlist(get)">Wishlist</button>
                 </ion-col>
-              </ion-row> -->
+              </ion-row>
               
             </ion-col>
           </ion-row>
           
           <ion-card-content>
             <ion-card-title>
-              <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+              <p style="color:#021C1E;"><strong>{{get.title}}</strong></p>
               <hr>              
             </ion-card-title>
             <p style="font-size:1rem; color: #db9501;"><strong>{{get.overview}}</strong></p>
@@ -78,6 +78,10 @@
       </ion-list>
     </div>
   </div>
+
+  <ion-fab right top>
+    <button ion-fab mini color="dark" (click)="viewCart()"><ion-icon name="cart"></ion-icon></button>
+  </ion-fab>
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">

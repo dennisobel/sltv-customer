@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController,ModalController, ViewController } from 'ionic-angular';
+import { NavController,ModalController, ViewController, AlertController } from 'ionic-angular';
 import "rxjs/add/operator/map"
 import { MoviedetailPage } from "../moviedetail/moviedetail"
+import { SeasonslistPage } from "../seasonslist/seasonslist"
 import { ListPage } from "../list/list"
 
 //API
@@ -33,6 +34,7 @@ export class HomePage {
 	constructor(
 		public navCtrl: NavController,
 		public modalCtrl:ModalController,
+		public alertCtrl:AlertController,
 		public viewCtrl:ViewController,	
 		public tvApiProvider : TvapiProvider,	
 		public tmdbApiProvider : TmdbapiProvider,
@@ -46,17 +48,11 @@ export class HomePage {
 		})
 
 		this.tvApiProvider.getPopularTvShows(this.page)		
-		.subscribe(popularTvShows=>{
-			//console.log(this.page)
-			this.popularTvShows = popularTvShows.results
-			console.log(popularTvShows.results)
+		.subscribe(popularTvShows=>{			
+			this.popularTvShows = popularTvShows.results			
 		})
 
-		//Get Genres
-		this.tvApiProvider.getTvGenres()
-		.subscribe(tvGenres => {
-			this.tvGenres = tvGenres.genres			
-		})			
+				
 		
 	}	
 
@@ -77,9 +73,9 @@ export class HomePage {
 
 
 	//create movieModal
-	movieModal(get){
-		let movieDetail = this.modalCtrl.create(MoviedetailPage,get);
-		movieDetail.present();
+	seasonsModal(get){
+		let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+		seasonsModal.present();
 	}
 
 	//addtopool
@@ -96,9 +92,9 @@ export class HomePage {
 			.subscribe(popularTvShows => {
 				//popularTvShows.page++
 				//this.page = popularTvShows.page
-				console.log(popularTvShows.page)
+				//console.log(popularTvShows.page)
 				this.popularTvShows = popularTvShows.results
-				console.log(this.popularTvShows)
+				//console.log(this.popularTvShows)
 			})
 			
 			infiniteScroll.complete()

@@ -2,22 +2,19 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the MovieapiProvider provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class MovieapiProvider {
+  APIKEY = "35be3be17f956346becdba89d4f22ca1"
 
   constructor(public http: Http){}
 
   //Movie
 
   //Movie Popular
-  getMoviePopular(){
-  	return this.http.get("https://api.themoviedb.org/3/movie/popular?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
+  getMoviePopular(page=1){
+  	//return this.http.get("https://api.themoviedb.org/3/movie/popular?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
+    return this.http.get("https://api.themoviedb.org/3/movie/popular"+"?api_key="+this.APIKEY+"&language=en-US"+"&page="+page+"&append_to_response=popular")
   	.map(res => res.json())
   }
 

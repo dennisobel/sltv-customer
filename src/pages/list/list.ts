@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController,ModalController, ViewController, NavParams } from 'ionic-angular';
 import "rxjs/add/operator/map"
-import { MoviedetailPage } from "../moviedetail/moviedetail"
+//import { MoviedetailPage } from "../moviedetail/moviedetail"
+import { SeasonslistPage } from "../seasonslist/seasonslist"
 
 //API
 import { Http } from "@angular/http"
@@ -60,9 +61,9 @@ export class ListPage {
   }
 
   //modal
-  movieModal(get){
-    let movieDetail = this.modalCtrl.create(MoviedetailPage,get);
-    movieDetail.present();
+  seasonsModal(get){
+    let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+    seasonsModal.present();
   }
 
   onClose(remove = false){

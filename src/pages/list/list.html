@@ -1,32 +1,36 @@
-<ion-header>
-  <ion-navbar color="forestgreen">
-    <button ion-button icon-only color="forestgreen" (click)="onClose()">
-      <ion-icon name="arrow-dropleft"></ion-icon>
-    </button> 
-    <ion-title>Search Results</ion-title>
-  </ion-navbar>  
-</ion-header>
-
 <ion-content>
+  <ion-toolbar color="forestgreen">      
+    <ion-title text-center>Search Results</ion-title>       
+  </ion-toolbar>
+
   <ion-list *ngFor="let get of search_results">
-      <ion-card (tap)="movieModal(get)" (press)="addToPool(get)">    
-          <ion-row>
-            <ion-col col-4>
-              <div>
-                <img [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
-              </div>
-            </ion-col>
-            <ion-col col-8>
-              <div>
-                <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
-                <p style="font-size:1rem; color: #db9501;"><strong>First Air Date:{{get.first_air_date}}</strong></p>
-                <hr>
-                <p style="font-size:1.1rem; color: #db9501;"><strong>{{get.genre_ids}}</strong></p>
-                <hr>
-                <p style="font-size:1.1rem; color: #db9501;"><strong>Popularity:{{get.popularity}}</strong></p>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-card>  
-      </ion-list>
+    <ion-card (click)="seasonsModal(get)" (press)="addToPool(get)">    
+      <ion-row>
+        <ion-col col-4>
+          <div>
+            <img [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
+          </div>
+        </ion-col>
+        <ion-col col-8>
+          <div>
+            <p style="font-size:1.2rem; color: #db9501;"><strong>Premier:{{get.first_air_date}}</strong></p>
+            <ion-badge color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>{{get.vote_average}}</strong></ion-badge>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-card-content>
+        <ion-card-title>
+          <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+          <hr>              
+        </ion-card-title>
+        <p style="font-size:1rem; color: #db9501;"><strong>{{get.overview}}</strong></p>
+      </ion-card-content>
+    </ion-card>  
+  </ion-list>
+
+  <ion-fab left top>
+    <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+  </ion-fab>
 </ion-content>
+
+

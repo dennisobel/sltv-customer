@@ -8,7 +8,10 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { MovielistPage } from '../pages/movielist/movielist';
 import { MoviedetailPage } from '../pages/moviedetail/moviedetail';
-import { PoolPage } from '../pages/pool/pool';
+import { SeasonslistPage } from '../pages/seasonslist/seasonslist';
+import { CartPage } from '../pages/cart/cart';
+import { WishlistPage } from '../pages/wishlist/wishlist';
+import { MoviehomePage } from '../pages/moviehome/moviehome';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,6 +19,7 @@ import { HideHeaderDirective } from '../directives/hideheader/hideheader';
 import { TmdbapiProvider } from '../providers/tmdbapi/tmdbapi';
 import { TvapiProvider } from '../providers/tvapi/tvapi';
 import { MovieapiProvider } from '../providers/movieapi/movieapi';
+import { UtilsProvider } from '../providers/utils/utils';
 
 @NgModule({
   declarations: [
@@ -23,8 +27,11 @@ import { MovieapiProvider } from '../providers/movieapi/movieapi';
     HomePage,
     ListPage,
     MoviedetailPage,
-    PoolPage,
+    CartPage,
     MovielistPage,
+    SeasonslistPage,
+    WishlistPage,
+    MoviehomePage,
     HideHeaderDirective
   ],
   imports: [
@@ -38,8 +45,11 @@ import { MovieapiProvider } from '../providers/movieapi/movieapi';
     HomePage,
     ListPage,
     MoviedetailPage,
-    PoolPage,
-    MovielistPage
+    CartPage,
+    MovielistPage,
+    WishlistPage,
+    MoviehomePage,
+    SeasonslistPage
   ],
   providers: [
     StatusBar,
@@ -47,7 +57,8 @@ import { MovieapiProvider } from '../providers/movieapi/movieapi';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TmdbapiProvider,
     TvapiProvider,
-    MovieapiProvider
+    MovieapiProvider,
+    UtilsProvider
   ]
 })
 export class AppModule {}
