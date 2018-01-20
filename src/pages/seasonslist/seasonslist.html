@@ -20,7 +20,7 @@
               <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToCart(get)"><ion-icon name="basket">Cart</ion-icon></button>
             </ion-col>
             <ion-col col-6>
-              <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToWishlist(get)">Wishlist</button>
+              <!-- <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToWishlist(get)">Wishlist</button> -->
             </ion-col>
           </ion-row>
         </ion-col>
@@ -34,6 +34,10 @@
 
   <ion-fab right top>
     <button ion-fab mini color="dark" (click)="viewCart()"><ion-icon name="cart"></ion-icon></button>
+  </ion-fab>
+
+  <ion-fab right bottom>
+      <button ion-fab mini color="forestgreen" (click)="scrollToTop()"><ion-icon name="arrow-dropup"></ion-icon></button>
   </ion-fab>
 
 </ion-content>

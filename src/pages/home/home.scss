@@ -2,5 +2,9 @@ page-home {
 	img{
 		width:100px;
 		height:100px;	    	
+	},
+
+	[show]{
+	display: block !important;
 	}
 }

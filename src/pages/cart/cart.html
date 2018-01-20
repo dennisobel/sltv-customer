@@ -1,15 +1,16 @@
 <ion-content padding>
 	<ion-toolbar color="forestgreen">      
     	<ion-title text-center>Cart</ion-title>       
-  	</ion-toolbar>   
+  </ion-toolbar>   
   
+  <ion-title style="color:#2E4600;" text-center>Tv Series</ion-title> 
   <ion-list *ngFor="let get of cartlist; let i = index">
     <ion-item-sliding>
       <ion-item>
         <ion-thumbnail item-start>
-          <!-- <img src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl> -->
+          <img src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl> 
         </ion-thumbnail>
-        <!-- <p style="color:#021C1E;"><strong>{{title[i]}}</strong></p>  -->
+        <p style="color:#021C1E;"><strong>{{get.title}}</strong></p>  
         <p style="color:#021C1E;"><strong>Season {{get.season_number + 1}}</strong></p> 
       </ion-item>
       <ion-item-options side="right">
@@ -18,7 +19,27 @@
         </button>
       </ion-item-options>
   </ion-item-sliding>
-  </ion-list>  
+  </ion-list> 
+
+  <hr>
+
+  <ion-title style="color:#2E4600;" text-center>Movies</ion-title> 
+  <ion-list *ngFor="let get of moviecartlist">
+    <ion-item-sliding>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl> 
+        </ion-thumbnail>
+        <p style="color:#021C1E;"><strong>{{get.title}}</strong></p> 
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="strawberry" (click)="onDeleteMovie(get)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
 	<ion-fab left top>
   		<button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="arrow-dropleft"></ion-icon></button>
 	</ion-fab>

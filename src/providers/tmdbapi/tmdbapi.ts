@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the TmdbapiProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class TmdbapiProvider {
 	apiKey = "35be3be17f956346becdba89d4f22ca1"

@@ -1,25 +1,94 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController,ModalController, ViewController, NavParams, ToastController } from 'ionic-angular';
+import "rxjs/add/operator/map"
+//import { MoviedetailPage } from "../moviedetail/moviedetail"
+//import { SeasonslistPage } from "../seasonslist/seasonslist"
 
-/**
- * Generated class for the MoviesearchPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+//API
+import { Http } from "@angular/http"
+import 'rxjs/add/operator/map'
+import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
+import { TvapiProvider } from "../../providers/tvapi/tvapi"
+import { UtilsProvider } from "../../providers/utils/utils"
+//import { MovieapiProvider } from "../../providers/movieapi/movieapi"
 
-@IonicPage()
 @Component({
   selector: 'page-moviesearch',
-  templateUrl: 'moviesearch.html',
+  templateUrl: 'moviesearch.html'
 })
 export class MoviesearchPage {
+  tmdbConfigImages:any;
+  tvGenres:any;
+  search_results:any;
+  base_url:any;
+  poster_sizes:any;
+  backdrop_sizes:any;
+  backdrop:any;
+  poster:any;
+  rating:any;
+  APIKEY = "35be3be17f956346becdba89d4f22ca1";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public modalCtrl:ModalController,
+    public viewCtrl:ViewController, 
+    public toastCtrl:ToastController,
+    public navParams: NavParams,
+    public tvApiProvider : TvapiProvider,  
+    public tmdbApiProvider : TmdbapiProvider,
+    public utilsProvider : UtilsProvider,
+    public http: Http){}
+
+  ionViewDidLoad(){
+    this.search_results = this.navParams.get("search_results")
+    // console.log(this.navParams.get("search_results"))
+
+    //Config
+
+    this.http.get("https://api.themoviedb.org/3/configuration?api_key=35be3be17f956346becdba89d4f22ca1")
+    .map(res => {
+      console.log(res.json().images)
+      this.base_url = res.json().images.base_url
+      this.poster_sizes = res.json().images.poster_sizes[6]
+    })
+    .subscribe(tmdbConfig => {
+    // this.tmdbConfigImages = tmdbConfig
+    // console.log(tmdbConfig)
+    })
+
+    //Get Genres
+    this.tvApiProvider.getTvGenres()
+    .subscribe(tvGenres => {
+      this.tvGenres = tvGenres.genres      
+    })  
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MoviesearchPage');
-  }
+  addToCart(get){
+		this.utilsProvider.addToMoviecart(get)
+		//this.utilsProvider.addToTitles(this.title)
+		//this.cartlist.push(get)
+		//console.log(this.cartlist)
+		//let cartModal = this.modalCtrl.create(CartPage,{cartlist:this.cartlist})
+		let toast = this.toastCtrl.create({
+			message:"Added to cart",
+			duration:1500,
+			position:"middle"
+		})
+		toast.present();
+		//cartModal.present()
+	}
 
+
+  // //modal
+  // seasonsModal(get){
+  //   let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+  //   seasonsModal.present();
+  // }
+
+  onClose(remove = false){
+      this.viewCtrl.dismiss(remove);
+  }
 }
+
+
+

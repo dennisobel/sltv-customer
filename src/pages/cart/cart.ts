@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, ActionSheetController, Platform } from 'ionic-angular';
+import { NavController, NavParams, ViewController, AlertController, ActionSheetController, Platform, ToastController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
+import { HomePage } from "../home/home"
 
 //API
 import { Http } from "@angular/http"
 import 'rxjs/add/operator/map'
-// import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
-// import { TvapiProvider } from "../../providers/tvapi/tvapi"
-
 import { UtilsProvider } from "../../providers/utils/utils"
+
+import { Socket } from 'ng-socket-io';
+import { Observable } from 'rxjs/Observable';
+
 
 
 @Component({
@@ -16,13 +20,19 @@ import { UtilsProvider } from "../../providers/utils/utils"
 })
 export class CartPage {
 	cartlist:any;
+	moviecartlist:any;
 	base_url:any;
 	poster_sizes:any;
 	tmdbConfigImages:any;
 	backdrop_sizes:any;
-	title:any;
 	checkout:any;
-	APIKEY = "35be3be17f956346becdba89d4f22ca1"
+	userinfo:any;
+	user:any;
+	connected:any;
+	index:any;
+	APIKEY = "35be3be17f956346becdba89d4f22ca1";
+	users:any;
+	
 
 	constructor(
 		public navCtrl: NavController, 
@@ -30,15 +40,35 @@ export class CartPage {
 		public platform: Platform,
 		public viewCtrl:ViewController,
 		public actionsheetCtrl: ActionSheetController,
+		public alertCtrl: AlertController,
+		public toastCtrl:ToastController,
 		public utilsProvider: UtilsProvider,
+		public storage: Storage,
+		public socket: Socket, 
 		public http:Http){
+		
+			this.socket.on("emitconnectedusers",(data)=>{
+				this.connected = data
+				console.log(this.connected)
+			})		
 	}
 
-	ionViewDidLoad(){
-		this.cartlist = this.navParams.get("cartlist")
-		this.title = this.navParams.get("title")
-		// this.checkout = this.cartlist.concat(this.title)
-		console.log(this.cartlist)
+
+
+	ionViewWillEnter(){
+		this.socket.emit("getconnectedusers")
+	}
+
+
+	ionViewDidLoad(){		
+
+		//Load user info
+        this.storage.get('user').then((value) => { 
+            this.user = value.phone_number; 
+        });   
+
+		this.cartlist=this.utilsProvider.getCartTitle();
+		this.moviecartlist=this.utilsProvider.getMovieCart()
 
 		//config
 		this.http.get("https://api.themoviedb.org/3/configuration?api_key=35be3be17f956346becdba89d4f22ca1")
@@ -54,21 +84,20 @@ export class CartPage {
 	//delete
 	onDelete(get){
 		let cart = this.utilsProvider.getCart()
-		for(var i=0; i<cart.length; i++){
-			//console.log(cart[i])
-			//Object.is(get, cart[i])
-			//console.log(JSON.stringify(get) === JSON.stringify(cart[i]))
-			if(JSON.stringify(get) === JSON.stringify(cart[i])){
-				const position = cart.findIndex(get)
-				this.utilsProvider.removeFromCart(get)
-				this.cartlist.splice(position,1)
-			}
-		}
+		let index = cart.indexOf(get)
+		this.utilsProvider.removeFromCart(index)
+		this.utilsProvider.removeFromTitle(index)
+	}
+
+	onDeleteMovie(get){
+		let cart = this.utilsProvider.getMovieCart()
+		let index = cart.indexOf(get)
+		this.utilsProvider.removeFromMovieCart(index)
 	}
 
   	//close movieModal
 	onClose(remove = false){
-	    this.viewCtrl.dismiss(remove);
+	    this.navCtrl.pop()
 	}
 
 	//open action sheet
@@ -80,8 +109,57 @@ export class CartPage {
 				{
 					text:"Place Order",
 					icon: !this.platform.is("ios")?"cash":null,
-					handler:()=>{
-						console.log(this.cartlist)
+					handler:()=>{		
+						//get connected
+						let _connected = this.connected
+						console.log(_connected)						
+						console.log("Calling Place Order...")	
+
+						let _alert = this.alertCtrl.create()
+						_alert.setTitle("Choose Distributor")
+
+						for(var key in _connected){
+							_alert.addInput({
+								type:"radio",
+								label:key,
+								value:_connected[key],
+							})
+						}
+
+						_alert.addButton({
+							text:"Cancel",
+							role:"cancel",
+							handler:()=>{
+								this.ionViewDidLoad()
+							}
+						})
+
+						_alert.addButton({
+							text:"Ok",
+							handler:(data)=>{
+								var _movieTvShowCart = {
+									tvshows:this.cartlist,
+									movies:this.moviecartlist,
+									phone_number:this.user,
+									socket:data.socket
+								}
+								console.log("emitting data to server...")
+								this.socket.emit("add-cart",_movieTvShowCart);
+
+								this.utilsProvider.emptyArray()
+
+								let toast = this.toastCtrl.create({
+									message:"Order Placed",
+									duration:800,
+									position:"middle"
+								})
+								toast.present();								
+							}
+						})
+
+						_alert.present()
+
+
 					}
 				},
 				{
@@ -97,5 +175,47 @@ export class CartPage {
 
 		actionSheet.present()
 	}
-
 }
+
+
+// //save connected users to datastore
+
+// this.socket.on("connected",(data)=>{
+// 	this.connected = data
+// 	console.log(this.connected)
+// 	this.setValue(this.connected)
+// })	
+
+
+
+// setValue(data){
+// 	this.storage.set("object",data)
+// 	.then((successData)=>{
+// 		console.log("Data stored")
+// 		console.log(successData)
+// 	})
+// 	.then(()=>{
+// 		this.getValue()
+// 	})
+// }
+
+// getValue(){
+// 	this.storage.get("object")
+// 	.then((data)=>{
+// 		console.log(data);
+// 		this.connected = data
+// 	})
+// 	return this.connected;
+// }
+
+// removeConnected(){
+// 	this.storage.remove("object")
+// 	.then(()=>{
+// 		console.log("connected removed")
+// 	})
+// }
+
+
+// ionViewWillLeave(){
+// 	this.removeConnected()
+// }

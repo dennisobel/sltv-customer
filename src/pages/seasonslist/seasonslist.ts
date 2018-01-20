@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ViewController, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, ViewController, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { CartPage } from "../cart/cart"
 import { WishlistPage } from "../wishlist/wishlist"
 
@@ -15,6 +15,8 @@ import { UtilsProvider } from "../../providers/utils/utils"
   templateUrl: 'seasonslist.html',
 })
 export class SeasonslistPage {
+	@ViewChild(Content) content: Content;
+
 	movdet:any="storyline"
 	title:any;
 	titles:any
@@ -53,17 +55,11 @@ export class SeasonslistPage {
 
   ionViewDidLoad() {
 		this.id = this.navParams.get("id")
-		//console.log(this.id)
-
 		this.tvApiProvider.getTvDetails(this.id)
-		
-
 		this.title = this.navParams.get("name")
 		
-
 	  	this.http.get("https://api.themoviedb.org/3/configuration?api_key=35be3be17f956346becdba89d4f22ca1")
 	  	.map(res => {
-	  		//console.log(res.json().images)
 	  		this.base_url = res.json().images.base_url
 	  		this.poster_sizes = res.json().images.poster_sizes[0]
 	  		this.backdrop_sizes = res.json().images.poster_sizes[2]
@@ -75,8 +71,6 @@ export class SeasonslistPage {
 		this.http.get("https://api.themoviedb.org/3/tv/"+this.id+"?api_key="+this.APIKEY+"&language=en-US")
   		.map(res => {
   			this.tvDetails=res.json()
-  			//console.log(res.json())
-
   			this.poster = res.json().poster_path
   			this.backdrop = res.json().backdrop_path
   			this.rating = res.json().vote_average
@@ -93,7 +87,6 @@ export class SeasonslistPage {
   		this.http.get("https://api.themoviedb.org/3/tv/"+this.id+"/similar?api_key="+this.APIKEY+"&language=en-US&page=1")
   		.map(res =>{
   			this.similar=res.json().results
-  			//console.log(this.similar)
   		})
   		.subscribe(res=>{
 
@@ -105,46 +98,30 @@ export class SeasonslistPage {
 	addToCart(get){
 		this.utilsProvider.addItemToCart(get)
 		this.utilsProvider.addToTitles(this.title)
-		//this.cartlist.push(get)
-		//console.log(this.cartlist)
-		//let cartModal = this.modalCtrl.create(CartPage,{cartlist:this.cartlist})
 		let toast = this.toastCtrl.create({
 			message:"Added to cart",
 			duration:1500,
 			position:"middle"
 		})
 		toast.present();
-		//cartModal.present()
 	}
-
-	addToWishlist(get){
-		this.utilsProvider.addItemToWishlist(get)
-		//this.wishlist.push(get)
-		//let wishlistModal = this.modalCtrl.create(WishlistPage,{wishlist:this.wishlist})
-		let toast = this.toastCtrl.create({
-			message:"Added to wishlist",
-			duration:1500,
-			position:"middle"
-		})
-		toast.present();
-		//wishlistModal.present()
-	}
-
 
 
 	viewCart(){
-		//console.log(this.cartlist)
-		this.cartlist = this.utilsProvider.getCart()
-		this.titles = this.utilsProvider.getTitles()
-		let cartModal = this.modalCtrl.create(CartPage,{cartlist:this.cartlist, title:this.titles})
+		let cartModal = this.modalCtrl.create(CartPage)
+		cartModal.onDidDismiss(data=>{
+			console.log(data)
+		})
 		cartModal.present()
-	}
-  	
-  
+	}  
 
 	//close movieModal
 	onClose(remove = false){
 	    this.viewCtrl.dismiss(remove);
+	}
+
+	scrollToTop(){
+		this.content.scrollToTop();
 	}
 
 }

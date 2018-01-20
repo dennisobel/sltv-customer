@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { NavController,ModalController, ViewController, AlertController, ToastController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController,ModalController, ViewController, AlertController, ToastController } from 'ionic-angular';
 import "rxjs/add/operator/map"
 import { MoviedetailPage } from "../moviedetail/moviedetail"
-import { ListPage } from "../list/list"
+import { MoviesearchPage } from "../moviesearch/moviesearch"
+import { LoginPage } from '../login/login';
 import { CartPage } from "../cart/cart"
-import { WishlistPage } from "../wishlist/wishlist"
+import { AuthProvider } from '../../providers/auth/auth';
 
 //API
 import { Http } from "@angular/http"
@@ -19,6 +20,8 @@ import { UtilsProvider } from "../../providers/utils/utils"
 })
 
 export class MoviehomePage {
+	@ViewChild(Content) content: Content;
+
 	listmovies="popular"
 	popularMovies:any;
 	tmdbConfigImages:any;
@@ -28,8 +31,11 @@ export class MoviehomePage {
 	APIKEY = "35be3be17f956346becdba89d4f22ca1"
 	search_results:any;
 	searchTerm: string = '';
-	cartlist:any[]=[];
-	wishlist:any[]=[];
+	moviecartlist:any[]=[];
+	moviewishlist:any[]=[];
+	upAndComing:any;
+	topRatedMovies:any;
+
 
 	constructor(
 		public navCtrl: NavController,
@@ -40,6 +46,7 @@ export class MoviehomePage {
 		public movieApiProvider : MovieapiProvider,	
 		public tmdbApiProvider : TmdbapiProvider,
 		public utilsProvider : UtilsProvider,
+		public authService: AuthProvider,
 		public http: Http){}
 
   ionViewDidLoad(){
@@ -54,16 +61,24 @@ export class MoviehomePage {
     this.movieApiProvider.getMoviePopular(this.page)
     .subscribe(popularMovies =>{
     	this.popularMovies = popularMovies.results
-    	console.log(popularMovies.results)
+    	//console.log(popularMovies.results)
+    })
+
+    //get up n coming
+    this.movieApiProvider.getMovieUpcoming(this.page)
+    .subscribe(upAndComing=>{
+    	this.upAndComing = upAndComing.results
+    })
+
+    //get top rated
+    this.movieApiProvider.getMovieTopRated(this.page)
+    .subscribe(topRatedMovies=>{
+    	this.topRatedMovies=topRatedMovies.results
     })
   }
 
   addToCart(get){
-		this.utilsProvider.addItemToCart(get)
-		//this.utilsProvider.addToTitles(this.title)
-		//this.cartlist.push(get)
-		//console.log(this.cartlist)
-		//let cartModal = this.modalCtrl.create(CartPage,{cartlist:this.cartlist})
+		this.utilsProvider.addToMoviecart(get)
 		let toast = this.toastCtrl.create({
 			message:"Added to cart",
 			duration:1500,
@@ -73,27 +88,66 @@ export class MoviehomePage {
 		//cartModal.present()
 	}
 
-	addToWishlist(get){
-		this.utilsProvider.addItemToWishlist(get)
-		//this.wishlist.push(get)
-		//let wishlistModal = this.modalCtrl.create(WishlistPage,{wishlist:this.wishlist})
-		let toast = this.toastCtrl.create({
-			message:"Added to wishlist",
-			duration:1500,
-			position:"middle"
-		})
-		toast.present();
-		//wishlistModal.present()
-	}
+	
 
 
 
 	viewCart(){
-		//console.log(this.cartlist)
-		this.cartlist = this.utilsProvider.getCart()
-		//this.titles = this.utilsProvider.getTitles()
-		let cartModal = this.modalCtrl.create(CartPage,{cartlist:this.cartlist})
+		let cartModal = this.modalCtrl.create(CartPage)
+		cartModal.onDidDismiss(data=>{
+			console.log(data)
+		})
 		cartModal.present()
+	}
+
+	//search
+	getItems(){
+		this.http.get("https://api.themoviedb.org/3/search/movie?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US"+"&query="+this.searchTerm)
+  		.map(res =>{
+  			res.json()  			
+  			this.search_results=res.json().results
+  			console.log(this.search_results)
+  			//search results modal
+  			let query_result = this.modalCtrl.create(MoviesearchPage,{search_results:this.search_results});
+  			query_result.onDidDismiss(data=>{
+  				console.log(data)
+  			})
+  			query_result.present();
+  		})
+  		.subscribe(search_results=>{
+  		})		
+	}
+
+	//infinite scroll
+	doInfinite(infiniteScroll){		
+		this.page = this.page+1
+		setTimeout(()=>{
+			this.movieApiProvider.getMoviePopular(this.page)
+			.subscribe(popularMovies => {
+				this.popularMovies = popularMovies.results
+			})
+
+			this.movieApiProvider.getMovieUpcoming(this.page)
+		    .subscribe(upAndComing=>{
+		    	this.upAndComing = upAndComing.results
+		    })
+
+		    this.movieApiProvider.getMovieTopRated(this.page)
+		    .subscribe(topRatedMovies=>{
+		    	this.topRatedMovies=topRatedMovies.results
+		    })
+			
+			infiniteScroll.complete()
+		},300);
+	}
+
+	logout(){
+		this.authService.logout()
+		this.navCtrl.setRoot(LoginPage)
+	}
+
+	scrollToTop(){
+		this.content.scrollToTop();
 	}
 
 }

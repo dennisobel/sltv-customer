@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController,ModalController, ViewController, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController, ModalController, ViewController, AlertController, App, LoadingController, ToastController } from 'ionic-angular';
 import "rxjs/add/operator/map"
-import { MoviedetailPage } from "../moviedetail/moviedetail"
+//import { MoviedetailPage } from "../moviedetail/moviedetail"
 import { SeasonslistPage } from "../seasonslist/seasonslist"
 import { ListPage } from "../list/list"
+import { LoginPage } from '../login/login';
+//import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { AuthProvider } from '../../providers/auth/auth';
 
 //API
 import { Http } from "@angular/http"
@@ -16,6 +19,8 @@ import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
 	templateUrl: 'home.html'
 })
 export class HomePage {
+	@ViewChild(Content) content: Content;
+
 	getinfo:any;
 	useinfo:any;
 	list:any[]=[];
@@ -23,6 +28,7 @@ export class HomePage {
 	poollist:any[]=[];
 	pool:any;
 	popularTvShows:any;
+	topratedTvShows:any;
 	tmdbConfigImages:any;
 	tvGenres:any;
 	page=1;
@@ -31,6 +37,9 @@ export class HomePage {
 	search_results:any;
 	searchTerm: string = '';
 
+	loading: any;
+  	isLoggedIn: boolean = false;
+
 	constructor(
 		public navCtrl: NavController,
 		public modalCtrl:ModalController,
@@ -38,7 +47,17 @@ export class HomePage {
 		public viewCtrl:ViewController,	
 		public tvApiProvider : TvapiProvider,	
 		public tmdbApiProvider : TmdbapiProvider,
-		public http: Http){}
+		public authService: AuthProvider,
+		public app: App,
+		public loadingCtrl: LoadingController, 
+		private toastCtrl: ToastController,
+		public http: Http){
+
+		if(localStorage.getItem("token")){
+			this.isLoggedIn = true;
+		}
+	}
+
 
 	ionViewDidLoad(){
 		this.tmdbApiProvider.getTmdbConfig()
@@ -47,14 +66,66 @@ export class HomePage {
 			//console.log(tmdbConfig.images)
 		})
 
+		//get popular
 		this.tvApiProvider.getPopularTvShows(this.page)		
 		.subscribe(popularTvShows=>{			
 			this.popularTvShows = popularTvShows.results			
 		})
 
+		//get latest
+		this.tvApiProvider.getTvTopRated(this.page)
+		.subscribe(topratedTvShows=>{
+			this.topratedTvShows=topratedTvShows.results
+			console.log(topratedTvShows.results)
+		})
+
+
 				
 		
 	}	
+
+	//logout
+	// logout(){
+	// 	this.authService.logout().then((result)=>{
+	// 		this.loading.dismiss();
+	// 		let nav = this.app.getRootNav();
+	// 		nav.setRoot(LoginPage);
+	// 	},(err)=>{
+	// 		this.loading.dismiss();
+	// 		this.presentToast(err);
+	// 	});
+	// }
+
+	logout(){
+		this.authService.logout()
+		this.navCtrl.setRoot(LoginPage)
+	}
+
+	//show loader
+	showLoader(){
+		this.loading = this.loadingCtrl.create({
+	    	content: 'Authenticating...'
+		});
+
+		this.loading.present();
+	}
+
+	//present toast
+	presentToast(msg) {
+		let toast = this.toastCtrl.create({
+			message: msg,
+			duration: 3000,
+			position: 'bottom',
+			dismissOnPageChange: true
+		});
+
+		toast.onDidDismiss(() => {
+		  console.log('Dismissed toast');
+		});
+
+		toast.present();
+	}
+
 
 	//search tv series
 	getItems(){
@@ -65,6 +136,9 @@ export class HomePage {
   			console.log(this.search_results)
   			//search results modal
   			let query_result = this.modalCtrl.create(ListPage,{search_results:this.search_results});
+  			query_result.onDidDismiss(data =>{
+  				console.log(data);
+  			})
   			query_result.present();
   		})
   		.subscribe(search_results=>{
@@ -75,6 +149,9 @@ export class HomePage {
 	//create movieModal
 	seasonsModal(get){
 		let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+		seasonsModal.onDidDismiss(data =>{
+			console.log(data)
+		})
 		seasonsModal.present();
 	}
 
@@ -96,8 +173,17 @@ export class HomePage {
 				this.popularTvShows = popularTvShows.results
 				//console.log(this.popularTvShows)
 			})
+
+			this.tvApiProvider.getTvTopRated(this.page)
+			.subscribe(topratedTvShows=>{
+				this.topratedTvShows=topratedTvShows.results
+			})
 			
 			infiniteScroll.complete()
 		},300);
+	}
+
+	scrollToTop(){
+		this.content.scrollToTop();
 	}
 }

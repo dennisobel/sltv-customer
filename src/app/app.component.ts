@@ -6,6 +6,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { MovielistPage } from '../pages/movielist/movielist';
 import { MoviehomePage } from '../pages/moviehome/moviehome';
+import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
+import { TabsPage } from '../pages/tabs/tabs';
+
+
+//remove later
+//import { SignupPage } from "../pages/signup/signup"
 
 @Component({
   templateUrl: 'app.html'
@@ -13,7 +20,7 @@ import { MoviehomePage } from '../pages/moviehome/moviehome';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, icon:any, component: any}>;
 
@@ -22,7 +29,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'TV Series', icon:'film', component: HomePage },
+      { title: 'TV Series', icon:'desktop', component: HomePage },
       { title: 'Movies', icon:'film', component: MoviehomePage }
     ];
 

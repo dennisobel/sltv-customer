@@ -63,6 +63,9 @@ export class ListPage {
   //modal
   seasonsModal(get){
     let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+    seasonsModal.onDidDismiss(data =>{
+      console.log(data)
+    })
     seasonsModal.present();
   }
 

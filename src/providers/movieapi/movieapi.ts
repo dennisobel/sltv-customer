@@ -19,14 +19,14 @@ export class MovieapiProvider {
   }
 
   //Movie Top Rated
-  getMovieTopRated(){
-  	return this.http.get("https://api.themoviedb.org/3/movie/top_rated?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
+  getMovieTopRated(page=1){
+  	return this.http.get("https://api.themoviedb.org/3/movie/top_rated"+"?api_key="+this.APIKEY+"&language=en-US"+"&page="+page+"&append_to_response=top_rated")
   	.map(res => res.json())
   }
 
   //Movie Upcoming
-  getMovieUpcoming(){
-  	return this.http.get("https://api.themoviedb.org/3/movie/upcoming?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
+  getMovieUpcoming(page=1){
+  	return this.http.get("https://api.themoviedb.org/3/movie/upcoming"+"?api_key="+this.APIKEY+"&language=en-US"+"&page="+page+"&append_to_response=upcoming")
   	.map(res => res.json())
   }
 

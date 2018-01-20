@@ -14,6 +14,18 @@ export class TvapiProvider {
   	.map(res=>res.json());
   }
 
+  //Tv Top Rated
+  getTvTopRated(page=1){
+    return this.http.get("https://api.themoviedb.org/3/tv/top_rated"+"?api_key="+this.APIKEY+"&language=en-US"+"&page="+page+"&append_to_response=top_rated")
+    .map(res => res.json())
+  }
+
+  //Tv Latest
+  getTvLatest(){
+    return this.http.get("https://api.themoviedb.org/3/tv/latest"+"?api_key="+this.APIKEY+"&language=en-US")
+    .map(res => res.json())
+  }
+
   //Tv Details
   getTvDetails(tv_id){
   	this.http.get("https://api.themoviedb.org/3/tv/"+tv_id+"?api_key="+this.APIKEY+"&language=en-US")
@@ -62,12 +74,6 @@ export class TvapiProvider {
   	.map(res => res.json())
   }
 
-  //Tv Latest
-  getTvLatest(){
-  	return this.http.get("https://api.themoviedb.org/3/tv/latest?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US")
-  	.map(res => res.json())
-  }
-
   //Tv Airing Today
   getTvAiringToday(){
   	return this.http.get("https://api.themoviedb.org/3/tv/airing_today?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
@@ -77,12 +83,6 @@ export class TvapiProvider {
   //Tv on the air next 7 days
   getTvOnAir(){
   	return this.http.get("https://api.themoviedb.org/3/tv/on_the_air?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
-  	.map(res => res.json())
-  }
-
-  //Tv Top Rated
-  getTvTopRated(){
-  	return this.http.get("https://api.themoviedb.org/3/tv/top_rated?api_key=35be3be17f956346becdba89d4f22ca1&language=en-US&page=1")
   	.map(res => res.json())
   }
 
