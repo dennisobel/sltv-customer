@@ -3,10 +3,10 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 //import { cartinterface } from "../../schemas/cartschema.interface"
 
-import { Socket } from 'ng-socket-io';
+// import { Socket } from 'ng-socket-io';
 
 
-let apiUrl = "http://localhost:8080/cart/";
+// let apiUrl = "http://localhost:8080/cart/";
 
 @Injectable()
 export class UtilsProvider {	
@@ -69,7 +69,7 @@ export class UtilsProvider {
 	getCartTitle(){
 		//console.log(this.cartlist , this.titles)
 		//modify later
-		var values;
+		// var values;
 		var _cartlist:any;
 		for(var j=0; j<this.titles.length; j++){
 	 		//values = this.titles[j]
@@ -125,7 +125,7 @@ export class UtilsProvider {
 	  		this.http.get("https://sltvcustomerserver.herokuapp.com/cart/getcart")
 	  		.subscribe(res => {
 	  			resolve(res.json());
-	  			console.log(res.json().data)
+	  			// console.log(res.json().data)
 	  		},(err)=>{
 	  			reject(err);
 	  		})
@@ -146,7 +146,7 @@ export class UtilsProvider {
 	}
 
 	emitConnected(){
-		console.log(this.emitData)
+		// console.log(this.emitData)
 		return this.emitData
 	}
 

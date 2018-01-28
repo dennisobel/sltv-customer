@@ -40,7 +40,7 @@ export class AuthProvider {
   }
  
   createAccount(details){
-   console.log(details)
+   // console.log(details)
     return new Promise((resolve, reject) => {
  
         let headers = new Headers();

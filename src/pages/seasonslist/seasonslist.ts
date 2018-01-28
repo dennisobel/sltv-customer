@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, ViewController, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { CartPage } from "../cart/cart"
-import { WishlistPage } from "../wishlist/wishlist"
+//import { WishlistPage } from "../wishlist/wishlist"
 
 //API
 import { Http } from "@angular/http"
@@ -110,7 +110,7 @@ export class SeasonslistPage {
 	viewCart(){
 		let cartModal = this.modalCtrl.create(CartPage)
 		cartModal.onDidDismiss(data=>{
-			console.log(data)
+			// console.log(data)
 		})
 		cartModal.present()
 	}  

@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
-import { RegisterPage } from '../register/register';
-import { Socket } from 'ng-socket-io';
-import { Observable } from 'rxjs/Observable';
-import { UtilsProvider } from "../../providers/utils/utils"
+// import { RegisterPage } from '../register/register';
+// import { Socket } from 'ng-socket-io';
+// import { Observable } from 'rxjs/Observable';
+// import { UtilsProvider } from "../../providers/utils/utils"
  
 @Component({
   selector: 'login',
@@ -23,7 +23,7 @@ export class LoginPage {
         public navCtrl: NavController, 
         public authService: AuthProvider, 
         //public socket: Socket, 
-        public utilsProvider: UtilsProvider,
+        // public utilsProvider: UtilsProvider,
         public loadingCtrl: LoadingController,
         public toastCtrll: ToastController) {
  
@@ -42,11 +42,11 @@ export class LoginPage {
  
         //Check if already authenticated
         this.authService.checkAuthentication().then((res) => {
-            console.log("Already authorized");
+            // console.log("Already authorized");
             this.loading.dismiss();
             this.navCtrl.setRoot(HomePage);
         }, (err) => {
-            console.log("Not already authorized");
+            // console.log("Not already authorized");
             this.loading.dismiss();
         });
  
@@ -66,7 +66,7 @@ export class LoginPage {
             this.navCtrl.setRoot(HomePage);
         }, (err) => {
             this.loading.dismiss();
-            console.log(err);
+            // console.log(err);
             //LOGIN ERROR WRITE ALERT HERE!!!!
             let toast = this.toastCtrll.create({
                 message:"Rectify login credentials and try again.",
@@ -76,7 +76,7 @@ export class LoginPage {
             })
 
             toast.onDidDismiss(()=>{
-                console.log("Dismissed toast")
+                // console.log("Dismissed toast")
             });
 
             toast.present();
@@ -91,11 +91,11 @@ export class LoginPage {
             password: this.password
         };
 
-        console.log(details)
+        // console.log(details)
 
         this.authService.createAccount(details).then((result) => {
             this.loading.dismiss();
-            console.log(result);
+            // console.log(result);
             this.navCtrl.setRoot(HomePage);
         }, (err) => {
             this.loading.dismiss();
@@ -103,9 +103,9 @@ export class LoginPage {
 
     }
  
-    launchSignup(){
-        this.navCtrl.push(RegisterPage);
-    }
+    // launchSignup(){
+    //     this.navCtrl.push(RegisterPage);
+    // }
  
     showLoader(){
  

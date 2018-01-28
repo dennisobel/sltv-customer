@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController,ModalController, ViewController, AlertController, ToastController } from 'ionic-angular';
 import "rxjs/add/operator/map"
-import { MoviedetailPage } from "../moviedetail/moviedetail"
+// import { MoviedetailPage } from "../moviedetail/moviedetail"
 import { MoviesearchPage } from "../moviesearch/moviesearch"
 import { LoginPage } from '../login/login';
 import { CartPage } from "../cart/cart"
@@ -35,7 +35,6 @@ export class MoviehomePage {
 	moviewishlist:any[]=[];
 	upAndComing:any;
 	topRatedMovies:any;
-
 
 	constructor(
 		public navCtrl: NavController,
@@ -88,14 +87,10 @@ export class MoviehomePage {
 		//cartModal.present()
 	}
 
-	
-
-
-
 	viewCart(){
 		let cartModal = this.modalCtrl.create(CartPage)
 		cartModal.onDidDismiss(data=>{
-			console.log(data)
+			// console.log(data)
 		})
 		cartModal.present()
 	}
@@ -106,11 +101,11 @@ export class MoviehomePage {
   		.map(res =>{
   			res.json()  			
   			this.search_results=res.json().results
-  			console.log(this.search_results)
+  			// console.log(this.search_results)
   			//search results modal
   			let query_result = this.modalCtrl.create(MoviesearchPage,{search_results:this.search_results});
   			query_result.onDidDismiss(data=>{
-  				console.log(data)
+  				// console.log(data)
   			})
   			query_result.present();
   		})

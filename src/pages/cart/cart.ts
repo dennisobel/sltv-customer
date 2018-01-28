@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, AlertController, ActionSheetController, Platform, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-
-import { HomePage } from "../home/home"
+// import { HomePage } from "../home/home"
 
 //API
 import { Http } from "@angular/http"
 import 'rxjs/add/operator/map'
 import { UtilsProvider } from "../../providers/utils/utils"
-
 import { Socket } from 'ng-socket-io';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 
 
 
@@ -49,7 +47,8 @@ export class CartPage {
 		
 			this.socket.on("emitconnectedusers",(data)=>{
 				this.connected = data
-				console.log(this.connected)
+				// console.log(this.connected)
+				this.ionViewDidLoad()
 			})		
 	}
 
@@ -112,8 +111,8 @@ export class CartPage {
 					handler:()=>{		
 						//get connected
 						let _connected = this.connected
-						console.log(_connected)						
-						console.log("Calling Place Order...")	
+						// console.log(_connected)						
+						// console.log("Calling Place Order...")	
 
 						let _alert = this.alertCtrl.create()
 						_alert.setTitle("Choose Distributor")
@@ -143,7 +142,7 @@ export class CartPage {
 									phone_number:this.user,
 									socket:data.socket
 								}
-								console.log("emitting data to server...")
+								// console.log("emitting data to server...")
 								this.socket.emit("add-cart",_movieTvShowCart);
 
 								this.utilsProvider.emptyArray()
@@ -167,7 +166,7 @@ export class CartPage {
 			        role: 'cancel', 
 			        icon: !this.platform.is('ios') ? 'close' : null,
 			        handler:()=>{
-			        	console.log("Cancel Clicked")
+			        	// console.log("Cancel Clicked")
 			        }
 		        }
 			]
@@ -177,45 +176,3 @@ export class CartPage {
 	}
 }
 
-
-// //save connected users to datastore
-
-// this.socket.on("connected",(data)=>{
-// 	this.connected = data
-// 	console.log(this.connected)
-// 	this.setValue(this.connected)
-// })	
-
-
-
-// setValue(data){
-// 	this.storage.set("object",data)
-// 	.then((successData)=>{
-// 		console.log("Data stored")
-// 		console.log(successData)
-// 	})
-// 	.then(()=>{
-// 		this.getValue()
-// 	})
-// }
-
-// getValue(){
-// 	this.storage.get("object")
-// 	.then((data)=>{
-// 		console.log(data);
-// 		this.connected = data
-// 	})
-// 	return this.connected;
-// }
-
-// removeConnected(){
-// 	this.storage.remove("object")
-// 	.then(()=>{
-// 		console.log("connected removed")
-// 	})
-// }
-
-
-// ionViewWillLeave(){
-// 	this.removeConnected()
-// }

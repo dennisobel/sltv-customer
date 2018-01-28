@@ -76,7 +76,7 @@ export class HomePage {
 		this.tvApiProvider.getTvTopRated(this.page)
 		.subscribe(topratedTvShows=>{
 			this.topratedTvShows=topratedTvShows.results
-			console.log(topratedTvShows.results)
+			// console.log(topratedTvShows.results)
 		})
 
 
@@ -120,7 +120,7 @@ export class HomePage {
 		});
 
 		toast.onDidDismiss(() => {
-		  console.log('Dismissed toast');
+		  // console.log('Dismissed toast');
 		});
 
 		toast.present();
@@ -133,11 +133,11 @@ export class HomePage {
   		.map(res =>{
   			res.json()  			
   			this.search_results=res.json().results
-  			console.log(this.search_results)
+  			// console.log(this.search_results)
   			//search results modal
   			let query_result = this.modalCtrl.create(ListPage,{search_results:this.search_results});
   			query_result.onDidDismiss(data =>{
-  				console.log(data);
+  				// console.log(data);
   			})
   			query_result.present();
   		})
@@ -150,7 +150,7 @@ export class HomePage {
 	seasonsModal(get){
 		let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
 		seasonsModal.onDidDismiss(data =>{
-			console.log(data)
+			// console.log(data)
 		})
 		seasonsModal.present();
 	}
@@ -158,7 +158,7 @@ export class HomePage {
 	//addtopool
 	addToPool(get){
 		this.poollist.push(get)
-		console.log(this.poollist)
+		// console.log(this.poollist)
 	}
 
 	//infinite scroll

@@ -4,15 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { MovielistPage } from '../pages/movielist/movielist';
 import { MoviehomePage } from '../pages/moviehome/moviehome';
 import { LoginPage } from '../pages/login/login';
-import { RegisterPage } from '../pages/register/register';
-import { TabsPage } from '../pages/tabs/tabs';
-
-
-//remove later
-//import { SignupPage } from "../pages/signup/signup"
 
 @Component({
   templateUrl: 'app.html'

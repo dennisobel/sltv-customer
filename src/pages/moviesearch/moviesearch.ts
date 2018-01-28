@@ -47,7 +47,7 @@ export class MoviesearchPage {
 
     this.http.get("https://api.themoviedb.org/3/configuration?api_key=35be3be17f956346becdba89d4f22ca1")
     .map(res => {
-      console.log(res.json().images)
+      // console.log(res.json().images)
       this.base_url = res.json().images.base_url
       this.poster_sizes = res.json().images.poster_sizes[6]
     })
