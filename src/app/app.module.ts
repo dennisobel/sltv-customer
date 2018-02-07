@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SeasonslistPage } from '../pages/seasonslist/seasonslist';
 import { CartPage } from '../pages/cart/cart';
+import { MycollectionPage } from '../pages/mycollection/mycollection';
 import { MoviehomePage } from '../pages/moviehome/moviehome';
 import { MoviesearchPage } from '../pages/moviesearch/moviesearch';
 import { LoginPage } from '../pages/login/login';
@@ -20,10 +21,12 @@ import { MovieapiProvider } from '../providers/movieapi/movieapi';
 import { UtilsProvider } from '../providers/utils/utils';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { AuthProvider } from '../providers/auth/auth';
+import { Facebook } from "@ionic-native/facebook";
+
 
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', options: {} };
-// const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
+// const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', optio
     HomePage,
     ListPage,
     CartPage,
+    MycollectionPage,
     SeasonslistPage,
     MoviehomePage,
     MoviesearchPage,
@@ -48,6 +52,7 @@ const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', optio
   entryComponents: [
     MyApp,
     HomePage,
+    MycollectionPage,
     ListPage,
     CartPage,
     MoviehomePage,
@@ -64,7 +69,8 @@ const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', optio
     MovieapiProvider,
     UtilsProvider,
     AuthServiceProvider,
-    AuthProvider
+    AuthProvider,
+    Facebook
   ]
 })
 export class AppModule {}

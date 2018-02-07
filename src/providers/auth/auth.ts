@@ -9,6 +9,14 @@ export class AuthProvider {
   public token: any;
   public user_number: any;
   public user:any;
+
+  path = {
+    login:"http://localhost:4000/api/auth/login",
+    register:"http://localhost:4000/api/auth/register",
+    protected:"http://localhost:4000/api/auth/protected"
+  }  
+
+  // 'https://sltvcustomerserver.herokuapp.com/api/auth/register'
  
   constructor(public http: Http, public storage: Storage) {
  
@@ -26,7 +34,7 @@ export class AuthProvider {
             let headers = new Headers();
             headers.append('Authorization', this.token);
  
-            this.http.get('https://sltvcustomerserver.herokuapp.com/api/auth/protected', {headers: headers})
+            this.http.get(this.path.protected, {headers: headers})
                 .subscribe(res => {
                     resolve(res);
                 }, (err) => {
@@ -46,10 +54,11 @@ export class AuthProvider {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
  
-        this.http.post('https://sltvcustomerserver.herokuapp.com/api/auth/register', JSON.stringify(details), {headers: headers})
+        this.http.post(this.path.register, JSON.stringify(details), {headers: headers})
           .subscribe(res => {
  
             let data = res.json();
+
             this.token = data.token;
             this.user = data.user;
             this.storage.set('token', data.token);
@@ -73,10 +82,11 @@ export class AuthProvider {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
  
-        this.http.post('https://sltvcustomerserver.herokuapp.com/api/auth/login', JSON.stringify(credentials), {headers: headers})
+        this.http.post(this.path.login, JSON.stringify(credentials), {headers: headers})
           .subscribe(res => {
  
             let data = res.json();
+            console.log(data)
             this.token = data.token;
             this.user = data.user;
             this.storage.set('token', data.token);

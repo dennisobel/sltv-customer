@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, ViewController, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
+import { Content, ViewController, NavController, NavParams, ModalController, ToastController, AlertController } from 'ionic-angular';
 import { CartPage } from "../cart/cart"
-//import { WishlistPage } from "../wishlist/wishlist"
+import { Storage } from '@ionic/storage';
 
 //API
 import { Http } from "@angular/http"
@@ -40,20 +40,31 @@ export class SeasonslistPage {
 	season_number:any
 	cartlist:any[]=[];
 	wishlist:any[]=[];
+	public _userdata:number;
 	APIKEY = "35be3be17f956346becdba89d4f22ca1"
 
   constructor(
 		public navCtrl: NavController, 
 		public navParams: NavParams,
 		public viewCtrl:ViewController,
+		public alertCtrl: AlertController,
 		public toastCtrl:ToastController,
 		public tmdbApiProvider : TmdbapiProvider,
 		public tvApiProvider : TvapiProvider,
 		public utilsProvider : UtilsProvider,
 		private modalCtrl: ModalController,
+		public storage: Storage,	
 		public http:Http){}
 
-  ionViewDidLoad() {
+  ionViewDidLoad(){
+  	//get user data
+  		(()=>{
+			this.storage.get("user")
+			.then((userdata)=>{
+				this._userdata =  userdata._id		
+			})
+		})()
+
 		this.id = this.navParams.get("id")
 		this.tvApiProvider.getTvDetails(this.id)
 		this.title = this.navParams.get("name")
@@ -104,6 +115,43 @@ export class SeasonslistPage {
 			position:"middle"
 		})
 		toast.present();
+	}
+
+	addToTvCollection(data){
+		let tvdetails={
+			episode_count:data.data.episode_count,
+			tvid:data.data.id,
+			poster_path:data.data.poster_path,
+			season_number:data.data.season_number,
+			title:data.title,
+			userId:this._userdata
+		}
+
+		console.log(tvdetails)
+
+		let alert = this.alertCtrl.create({
+			title:"Adding To Collection",
+			buttons:[
+				{
+					text:"Ok",
+					handler:()=>{
+						this.utilsProvider.createtv(tvdetails)
+						.subscribe((data)=>{
+							console.log(data)
+						})
+					}
+				},
+				{
+					text:"Nope",
+					role:"cancel",
+					handler:()=>{
+						//do something here besides console.log("done did")
+					}
+				}
+			]
+		})
+		
+		alert.present()
 	}
 
 

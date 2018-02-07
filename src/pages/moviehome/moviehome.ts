@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map'
 import { MovieapiProvider } from "../../providers/movieapi/movieapi"
 import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
 import { UtilsProvider } from "../../providers/utils/utils"
+import { Storage } from '@ionic/storage';
 
 @Component({
 	selector: 'page-home',
@@ -35,6 +36,7 @@ export class MoviehomePage {
 	moviewishlist:any[]=[];
 	upAndComing:any;
 	topRatedMovies:any;
+	_userdata:any;
 
 	constructor(
 		public navCtrl: NavController,
@@ -46,9 +48,18 @@ export class MoviehomePage {
 		public tmdbApiProvider : TmdbapiProvider,
 		public utilsProvider : UtilsProvider,
 		public authService: AuthProvider,
+		public storage: Storage,
 		public http: Http){}
 
   ionViewDidLoad(){
+  	//get user data
+	(()=>{
+	this.storage.get("user")
+	.then((userdata)=>{
+		this._userdata =  userdata._id		
+	})
+	})()
+
   	//config
   	this.tmdbApiProvider.getTmdbConfig()
 		.subscribe(tmdbConfig => {
@@ -143,6 +154,40 @@ export class MoviehomePage {
 
 	scrollToTop(){
 		this.content.scrollToTop();
+	}
+
+	addToMovieCollection(data){
+		let moviedetails = {
+			userId:this._userdata,
+			movieid:data.id,
+			poster_path:data.poster_path,
+			title:data.title,
+		}
+		console.log(moviedetails)
+
+		let alert = this.alertCtrl.create({
+			title:"Adding To Collection",
+			buttons:[
+				{
+					text:"Ok",
+					handler:()=>{
+						this.utilsProvider.createmovie(moviedetails)
+						.subscribe((data)=>{
+							console.log(data)
+						})
+					}
+				},
+				{
+					text:"Nope",
+					role:"cancel",
+					handler:()=>{
+						//do something here besides console.log("done did")
+					}
+				}
+			]
+		})
+		
+		alert.present()		
 	}
 
 }

@@ -28,7 +28,7 @@ export class TvapiProvider {
 
   //Tv Details
   getTvDetails(tv_id){
-  	this.http.get("https://api.themoviedb.org/3/tv/"+tv_id+"?api_key="+this.APIKEY+"&language=en-US")
+  	return this.http.get("https://api.themoviedb.org/3/tv/"+tv_id+"?api_key="+this.APIKEY+"&language=en-US")
   	.map(res => res.json())
   }
 

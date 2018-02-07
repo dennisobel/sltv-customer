@@ -1,0 +1,74 @@
+<ion-header #head>
+  <ion-navbar color="forestgreen" hideBackButton>
+    <button ion-button show menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> 
+    
+    <ion-title>My Collection</ion-title>
+
+    <ion-buttons end>
+      <button clear (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>  
+</ion-header>
+
+<ion-content no-padding hideheader [header]="head">
+  <ion-toolbar color="forestgreen" [(ngModel)]="collection">
+      <ion-segment color="blueblack" style="font-size:1.3rem" no-border-bottom>
+        <ion-segment-button value="tv" (click)="tvalert()">
+          Tv Shows
+        </ion-segment-button>
+        <ion-segment-button value="movies" (click)="moviealert()">
+          Movies
+        </ion-segment-button>
+      </ion-segment>
+  </ion-toolbar>  
+
+  <div [ngSwitch]="collection">
+    <div *ngSwitchCase="'tv'">
+      <ion-list *ngFor="let data of tvcollection">
+        <ion-item-sliding #item>
+          <ion-item>        
+              <ion-thumbnail item-start>
+                <img [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
+              </ion-thumbnail>
+              <p style="color:#021C1E;"><strong>{{data.title}} : {{data.season_number + 1}}</strong></p>  
+              <p style="color:#021C1E;"><strong>{{data.episode_count}} episodes.</strong></p>         
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="strawberry" (click)="deleteTVItem(data)"><ion-icon name="trash">Del</ion-icon></button>
+          </ion-item-options>      
+        </ion-item-sliding>
+      </ion-list>      
+    </div>
+
+    <div *ngSwitchCase="'movies'">
+      <ion-list *ngFor="let data of moviecollection">
+        <ion-item-sliding #item>
+          <ion-item>        
+              <ion-thumbnail item-start>
+                <img [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
+              </ion-thumbnail>
+              <p style="color:#021C1E;"><strong>{{data.title}}</strong></p>         
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="strawberry" (click)="deleteMovieItem(data)"><ion-icon name="trash">Del</ion-icon></button>
+          </ion-item-options>      
+        </ion-item-sliding>
+      </ion-list>        
+    </div>
+  </div>
+
+
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">      
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab right bottom>
+      <button ion-fab mini color="dark" (click)="scrollToTop()"><ion-icon name="arrow-dropup"></ion-icon></button>
+  </ion-fab>
+</ion-content> 

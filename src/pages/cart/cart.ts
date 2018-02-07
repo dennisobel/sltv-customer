@@ -55,11 +55,13 @@ export class CartPage {
 
 
 	ionViewWillEnter(){
-		this.socket.emit("getconnectedusers")
+		// this.socket.emit("getconnectedusers")
+		this.activeUsers()
 	}
 
 
 	ionViewDidLoad(){		
+
 
 		//Load user info
         this.storage.get('user').then((value) => { 
@@ -80,6 +82,13 @@ export class CartPage {
 		})
 	}
 
+	//reload connectedd users
+	activeUsers(){
+		return this.socket.emit("getconnectedusers")
+	}
+
+
+
 	//delete
 	onDelete(get){
 		let cart = this.utilsProvider.getCart()
@@ -96,11 +105,17 @@ export class CartPage {
 
   	//close movieModal
 	onClose(remove = false){
+		this.activeUsers()
 	    this.navCtrl.pop()
 	}
 
 	//open action sheet
 	openMenu(){
+		//this.activeUsers()
+		this.socket.on("getAllSockets",(data)=>{
+			console.log(JSON.parse(data))
+		})
+		this.socket.emit("_activeUsers")
 		let actionSheet = this.actionsheetCtrl.create({
 			title: "Cart Actions",
 			cssClass: 'action-sheets-basic-page',
@@ -113,6 +128,8 @@ export class CartPage {
 						let _connected = this.connected
 						// console.log(_connected)						
 						// console.log("Calling Place Order...")	
+
+						this.socket.emit("_activeUsers")
 
 						let _alert = this.alertCtrl.create()
 						_alert.setTitle("Choose Distributor")

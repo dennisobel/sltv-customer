@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../home/home';
-// import { RegisterPage } from '../register/register';
-// import { Socket } from 'ng-socket-io';
-// import { Observable } from 'rxjs/Observable';
-// import { UtilsProvider } from "../../providers/utils/utils"
+import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook";
+
  
 @Component({
   selector: 'login',
@@ -18,16 +16,14 @@ export class LoginPage {
     loading: any;
     usersessionarray:any[]=[];
     connected:any;
+    userData=null;
  
     constructor(
-        public navCtrl: NavController, 
-        public authService: AuthProvider, 
-        //public socket: Socket, 
-        // public utilsProvider: UtilsProvider,
-        public loadingCtrl: LoadingController,
-        public toastCtrll: ToastController) {
- 
-    }
+        private navCtrl: NavController, 
+        private authService: AuthProvider, 
+        private facebook: Facebook,
+        private loadingCtrl: LoadingController,
+        private toastCtrll: ToastController){}
  
     ionViewDidLoad() {
 
@@ -117,14 +113,14 @@ export class LoginPage {
  
     }
 
-    //Connected users
-    // getUsers(){
-    //     let observable = new Observable(observer => {
-    //         this.socket.on('connected',(data)=>{
-    //             observer.next(data);
-    //         });
-    //     })
-    //     return observable
-    // }
+    loginWithFB(){
+        this.facebook.login(['email','public_profile'])
+        .then((response: FacebookLoginResponse)=>{
+            this.facebook.api("me?fields=id,name,email,first_name,picture.width(720).height(720).as(picture_large)",[])
+            .then(profile =>{
+                this.userData = {email:profile['email'], first_name: profile['first_name'], picture: profile['picture_large']['data']['url'], username: profile['name']};
+            })
+        })
+    }
  
 }
