@@ -25,6 +25,7 @@ import { Facebook } from "@ionic-native/facebook";
 
 
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+import { OauthProvider } from '../providers/oauth/oauth';
 // const config: SocketIoConfig = { url: 'https://sltvsocket.herokuapp.com/', options: {} };
 const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
 
@@ -70,7 +71,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000/', options: {} };
     UtilsProvider,
     AuthServiceProvider,
     AuthProvider,
-    Facebook
+    Facebook,
+    OauthProvider
   ]
 })
 export class AppModule {}

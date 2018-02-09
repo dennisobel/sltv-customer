@@ -6,7 +6,7 @@
         <br><br>            
     </div>
     
-    <ion-row class="login-form">
+<!--     <ion-row class="login-form">
         <ion-col>
             <ion-list inset>
  
@@ -31,16 +31,12 @@
         <ion-col>
             <button ion-button outline small color="forestgreen" class="create-account" (click)="register()">Sign Up</button>
         </ion-col>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row>
         <!-- Facebook Login -->
         <ion-col>
-            <button ion-button full (click)="loginWithFB()">Facebook Login</button>
-
-            <ion-card *ngIf="userData">
-                <ion-card-header>{{userData.username}}</ion-card-header>
-            </ion-card>
+            <button ion-button outline (click)="loginWithFB()">Facebook Login</button>
         </ion-col>        
     </ion-row>
  
