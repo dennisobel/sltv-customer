@@ -1,12 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { MoviehomePage } from '../pages/moviehome/moviehome';
 import { LoginPage } from '../pages/login/login';
+import { StartPage } from '../pages/start/start';
 import { MycollectionPage } from '../pages/mycollection/mycollection';
+import { ProfilePage } from '../pages/profile/profile';
+import {SocketProvider} from '../providers/socket/socket'
 
 @Component({
   templateUrl: 'app.html'
@@ -14,18 +17,26 @@ import { MycollectionPage } from '../pages/mycollection/mycollection';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = StartPage;
 
   pages: Array<{title: string, icon:any, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform, 
+    public statusBar: StatusBar, 
+    public splashScreen: SplashScreen,
+    public alertCtrl: AlertController,
+    public socketProvider: SocketProvider) {
     this.initializeApp();
+
+    
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'TV Series', icon:'desktop', component: HomePage },
       { title: 'Movies', icon:'film', component: MoviehomePage },
       { title: 'My Collection', icon:'albums', component: MycollectionPage },
+      { title: 'Profile', icon:'contact', component: ProfilePage },
     ];
 
   }

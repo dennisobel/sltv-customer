@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavController, ModalController, ViewController, AlertController, App, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, Content, NavController, ModalController, ViewController, AlertController, App, LoadingController, ToastController } from 'ionic-angular';
 import "rxjs/add/operator/map"
 //import { MoviedetailPage } from "../moviedetail/moviedetail"
 import { SeasonslistPage } from "../seasonslist/seasonslist"
@@ -13,7 +13,10 @@ import { Http } from "@angular/http"
 import 'rxjs/add/operator/map'
 import { TvapiProvider } from "../../providers/tvapi/tvapi"
 import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
+import { SocketProvider } from "../../providers/socket/socket";
+import { Socket } from 'ng-socket-io';
 
+@IonicPage()
 @Component({
 	selector: 'page-home',
 	templateUrl: 'home.html'
@@ -47,6 +50,8 @@ export class HomePage {
 		public viewCtrl:ViewController,	
 		public tvApiProvider : TvapiProvider,	
 		public tmdbApiProvider : TmdbapiProvider,
+		private socketProvider: SocketProvider,  
+		private socket: Socket,
 		public authService: AuthProvider,
 		public app: App,
 		public loadingCtrl: LoadingController, 
@@ -56,10 +61,24 @@ export class HomePage {
 		if(localStorage.getItem("token")){
 			this.isLoggedIn = true;
 		}
+
+
+
+		
 	}
 
+	ionViewWillEnter(){
+		this.socketProvider.getConnectedUsers().then((res)=>{
+			this.socket.on('emitconnectedusers',(clients)=>{
+				console.log(clients)
+			})				
+		})					
+
+	}
 
 	ionViewDidLoad(){
+		this.socketProvider.incomingSwap()
+		this.socketProvider.onConnect()
 		this.tmdbApiProvider.getTmdbConfig()
 		.subscribe(tmdbConfig => {
 			this.tmdbConfigImages = tmdbConfig.images
@@ -84,17 +103,6 @@ export class HomePage {
 		
 	}	
 
-	//logout
-	// logout(){
-	// 	this.authService.logout().then((result)=>{
-	// 		this.loading.dismiss();
-	// 		let nav = this.app.getRootNav();
-	// 		nav.setRoot(LoginPage);
-	// 	},(err)=>{
-	// 		this.loading.dismiss();
-	// 		this.presentToast(err);
-	// 	});
-	// }
 
 	logout(){
 		this.authService.logout()
@@ -147,8 +155,9 @@ export class HomePage {
 
 
 	//create movieModal
-	seasonsModal(get){
-		let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+	seasonsModal(data){
+		console.log("SEASONS MODAL DATA:",data)
+		let seasonsModal = this.modalCtrl.create(SeasonslistPage,{data});
 		seasonsModal.onDidDismiss(data =>{
 			// console.log(data)
 		})
@@ -162,7 +171,8 @@ export class HomePage {
 	}
 
 	//infinite scroll
-	doInfinite(infiniteScroll){		
+	doInfinite(infiniteScroll){	
+		console.log(infiniteScroll)	
 		this.page = this.page+1
 		setTimeout(()=>{
 			this.tvApiProvider.getPopularTvShows(this.page)
@@ -187,3 +197,4 @@ export class HomePage {
 		this.content.scrollToTop();
 	}
 }
+

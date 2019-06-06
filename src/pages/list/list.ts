@@ -61,8 +61,8 @@ export class ListPage {
   }
 
   //modal
-  seasonsModal(get){
-    let seasonsModal = this.modalCtrl.create(SeasonslistPage,get);
+  seasonsModal(data){
+    let seasonsModal = this.modalCtrl.create(SeasonslistPage,{data});
     seasonsModal.onDidDismiss(data =>{
       // console.log(data)
     })

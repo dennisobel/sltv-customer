@@ -77,4 +77,8 @@ export class MovieapiProvider {
   	.map(res => res.json());
   }
 
+  tmdb(){
+    return this.http.get("http://localhost:3000/popularMovies").map(res=>res.json())
+  }
+
 }

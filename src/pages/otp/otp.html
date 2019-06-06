@@ -1,0 +1,12 @@
+<ion-content padding class="no-scroll">
+  <h5>A one time password has been sent to your cell phone, please enter it below.</h5>
+  <form [formGroup]="otpform" (ngSubmit)="handleOTP('SubscriptionPage')">
+    <ion-item>    
+      <ion-input formControlName="onetimepassword" placeholder="One Time Password" style="text-align:right; border-radius: 4px;" [(ngModel)]="otp" type="text"></ion-input>
+    </ion-item>
+
+    <button ion-button block color="popOverBtn" type="submit" [disabled]="!otpform.valid">Confirm</button>
+    <hr>
+    <button ion-button block clear color="forestgreen" (click)="resendOTP()">Resend</button>
+  </form>  
+</ion-content> 

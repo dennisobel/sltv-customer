@@ -14,6 +14,7 @@ import { MovieapiProvider } from "../../providers/movieapi/movieapi"
 import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
 import { UtilsProvider } from "../../providers/utils/utils"
 import { Storage } from '@ionic/storage';
+import { SocketProvider } from "../../providers/socket/socket";
 
 @Component({
 	selector: 'page-home',
@@ -49,16 +50,28 @@ export class MoviehomePage {
 		public utilsProvider : UtilsProvider,
 		public authService: AuthProvider,
 		public storage: Storage,
+		public socketProvider: SocketProvider,
 		public http: Http){}
 
   ionViewDidLoad(){
-  	//get user data
+	  
+	
+	  //get user data
+	/*
 	(()=>{
 	this.storage.get("user")
 	.then((userdata)=>{
 		this._userdata =  userdata._id		
 	})
 	})()
+	*/
+
+	this.movieApiProvider.tmdb()		
+	.subscribe(data=>{
+		console.log(data)
+	})
+
+	this.socketProvider.incomingSwap()
 
   	//config
   	this.tmdbApiProvider.getTmdbConfig()
@@ -156,6 +169,7 @@ export class MoviehomePage {
 		this.content.scrollToTop();
 	}
 
+	/*
 	addToMovieCollection(data){
 		let moviedetails = {
 			userId:this._userdata,
@@ -189,5 +203,6 @@ export class MoviehomePage {
 		
 		alert.present()		
 	}
+	*/
 
 }

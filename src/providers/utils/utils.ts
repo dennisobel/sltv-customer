@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { TvapiProvider } from "../../providers/tvapi/tvapi"
 import 'rxjs/add/operator/map';
+import { resolve } from 'path';
 
 @Injectable()
 export class UtilsProvider {	
@@ -13,13 +14,21 @@ export class UtilsProvider {
 	public tvcollection:any[] = []
 	// public path:string="https://sltvcustomerserver.herokuapp.com/cart/getcart"
 	private path = {
-		getcart:"http://localhost:4000/cart/getcart",
+		// createcart:"http://localhost:4000/cart/createcart",
+		createcart:"http://localhost:4000/createcart",
+		getcart:"http://localhost:4000/cart/getcart", 
+		getcartbyid:"http://localhost:4000/cart/getcartbyid/",
+		deletecartbyid:"http://localhost:4000/cart/deletecartbyid/",		
 		createtv:"http://localhost:4000/tv/createtv",
 		gettv:"http://localhost:4000/tv/gettv/",
 		deletetv:"http://localhost:4000/tv/deletetv/",
 		createmovie:"http://localhost:4000/movies/createmovie",
 		getmovie:"http://localhost:4000/movies/getmovie/",
-		deletemovie:"http://localhost:4000/movies/deletemovie/"
+		deletemovie:"http://localhost:4000/movies/deletemovie/",
+		createmessage:"http://localhost:4000/messages/createmessage/",
+		getmessage:"http://localhost:4000/messages/getmessage/",
+		getmessages:"http://localhost:4000/messages/getmessages/",
+		deletemessage:"http://localhost:4000/messages/deletemessage/"
 	}
 
 	constructor(
@@ -88,7 +97,7 @@ export class UtilsProvider {
 		}
 
 		//_cartlist = this.cartlist.concat(this.moviecartlist)
-		//console.log(_cartlist)
+		console.log(_cartlist)
 		return _cartlist
 	}
 
@@ -97,7 +106,7 @@ export class UtilsProvider {
 	}
 	
 
-	//get carts posted
+	//get all carts posted
 	getCartsPosted(){
 		return new Promise((resolve, reject)=>{
 			let headers = new Headers();
@@ -112,6 +121,40 @@ export class UtilsProvider {
 	  			reject(err);
 	  		})
 		})
+	}
+
+	//get cart by id
+	getCartById(phone_number){	  		
+  		return this.http.get(this.path.getcartbyid + phone_number)	
+  		.map(res=>res.json())		
+	}
+
+	//delete cart by id
+	delCartById(phone_number){
+		return this.http.delete(this.path.deletecartbyid + phone_number)
+		.map(res => res.json())
+	}
+
+	//post message
+	//bookmark////////////////////////////////////////////////////
+	createmessage(data){
+		let headers = new Headers()
+		headers.append("Accept","application/json")
+		headers.append("Content-Type","application/json")
+
+		return this.http.post(this.path.createmessage, data, {headers:headers})		
+		.map(res => res.json())
+	}
+
+	//get message
+	getmessage(phone_number){
+		return this.http.get(this.path.getmessage + phone_number)
+		.map(res => res.json())
+	}
+
+	getmessages(){
+		return this.http.get(this.path.getmessages)
+		.map(res=>res.json())
 	}
 
 	//post tv collection
@@ -230,5 +273,31 @@ export class UtilsProvider {
 	deleteTVItem(itemToDelete){
 
 	}
+
+	//get carts posted
+	// getCartsPosted(){		
+	// 	let headers = new Headers();
+ //      	headers.append("Accept","application/json");
+ //  		headers.append("Content-Type", "application/json");
+
+ //  		return this.http.get("https://sltvcompanionserver.herokuapp.com/cart/getcart")
+ //  		.map(res => res.json())		
+	// }
+
+	postMovieTvShowCart(data){
+		console.log("OUTGOING ORDER:",data)
+		return new Promise((resolve,reject)=>{
+			let headers = new Headers();
+			headers.append("Accept","application/json");
+			headers.append("Content-Type", "application/json");
+			
+			this.http.post(this.path.createcart, JSON.stringify(data),{headers:headers})
+			.subscribe((res)=>{
+				resolve(res.json())
+			},(err)=>{
+				reject(err);
+			})  
+		})		
+	}	
 	
 }

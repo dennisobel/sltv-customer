@@ -5,16 +5,7 @@
     </button> 
     
     <ion-title>My Collection</ion-title>
-
-    <ion-buttons end>
-      <button clear (click)="logout()">
-        <ion-icon name="log-out"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>  
-</ion-header>
-
-<ion-content no-padding hideheader [header]="head">
   <ion-toolbar color="forestgreen" [(ngModel)]="collection">
       <ion-segment color="blueblack" style="font-size:1.3rem" no-border-bottom>
         <ion-segment-button value="tv" (click)="tvalert()">
@@ -22,41 +13,47 @@
         </ion-segment-button>
         <ion-segment-button value="movies" (click)="moviealert()">
           Movies
-        </ion-segment-button>
+        </ion-segment-button>       
       </ion-segment>
   </ion-toolbar>  
+</ion-header>
 
+<ion-content padding hideheader [header]="head" class="app-background">
   <div [ngSwitch]="collection">
     <div *ngSwitchCase="'tv'">
       <ion-list *ngFor="let data of tvcollection">
+        <ion-card class="curves">
         <ion-item-sliding #item>
           <ion-item>        
               <ion-thumbnail item-start>
-                <img [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
+                <img class="curves" [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
               </ion-thumbnail>
               <p style="color:#021C1E;"><strong>{{data.title}} : {{data.season_number + 1}}</strong></p>  
               <p style="color:#021C1E;"><strong>{{data.episode_count}} episodes.</strong></p>         
           </ion-item>
           <ion-item-options side="right">
-            <button ion-button color="strawberry" (click)="deleteTVItem(data)"><ion-icon name="trash">Del</ion-icon></button>
+            <button style="font-size:1.2rem;" ion-button color="strawberry" (click)="deleteTVItem(data)"><ion-icon name="trash">Del</ion-icon></button>
           </ion-item-options>      
         </ion-item-sliding>
-      </ion-list>      
+      </ion-card>
+    </ion-list>      
     </div>
 
-    <div *ngSwitchCase="'movies'">
+    <div *ngSwitchCase="'movies'" class="curves">
       <ion-list *ngFor="let data of moviecollection">
+        <ion-card class="curves">
         <ion-item-sliding #item>
           <ion-item>        
               <ion-thumbnail item-start>
-                <img [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
+                <img class="curves" [(ngModel)]="configuration" src={{configuration.base_url}}{{configuration.poster_sizes[6]}}{{data.poster_path}} ngDefaultControl/>      
               </ion-thumbnail>
               <p style="color:#021C1E;"><strong>{{data.title}}</strong></p>         
           </ion-item>
           <ion-item-options side="right">
-            <button ion-button color="strawberry" (click)="deleteMovieItem(data)"><ion-icon name="trash">Del</ion-icon></button>
+            <button style="font-size:1.2rem;" ion-button color="strawberry" (click)="deleteMovieItem(data)"><ion-icon name="trash">Del</ion-icon></button>
           </ion-item-options>      
         </ion-item-sliding>
+        </ion-card>
       </ion-list>        
     </div>
   </div>
@@ -68,7 +65,21 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
-  <ion-fab right bottom>
-      <button ion-fab mini color="dark" (click)="scrollToTop()"><ion-icon name="arrow-dropup"></ion-icon></button>
-  </ion-fab>
+  <ion-fab center bottom>
+    <button class="footer title-bar" ion-fab color="blueblack">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="right">
+      <button (click)="scrollToTop()" class="footer title-bar" ion-fab color="fadednavy">
+        <ion-icon name="md-arrow-dropup"></ion-icon>
+        <div class="label">To Top</div>
+      </button>
+    </ion-fab-list>
+    <ion-fab-list side="left">   
+      <button (click)="logout()" class="footer title-bar" ion-fab color="fadednavy">
+        <ion-icon name="md-log-out"></ion-icon>
+        <div class="label">Logout</div>
+      </button>
+      </ion-fab-list>      
+  </ion-fab> 
 </ion-content> 

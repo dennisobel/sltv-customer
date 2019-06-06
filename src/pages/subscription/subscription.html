@@ -1,0 +1,74 @@
+<ion-content padding>
+
+<ion-badge color="goldenrod" style="font-size:1.9rem; color: #247e01;"><strong>Pick a subscription!</strong></ion-badge>
+  
+    <hr>
+    <!--
+    <ion-row>
+      <ion-col col-5>
+        <ion-badge (click)="weekly()" color="goldenrod" style="font-size:1.9rem; color: #7B1FA2;"><strong>Weekly</strong></ion-badge>
+      </ion-col>
+      <ion-col col-7>        
+        <ion-badge (click)="weekly()" color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>Ksh 50.00</strong></ion-badge>
+      </ion-col>
+    </ion-row>
+   
+    <hr>
+  
+    <ion-row>
+      <ion-col col-5>
+        <ion-badge (click)="monthly()" color="goldenrod" style="font-size:1.9rem; color: #7B1FA2;"><strong>Monthly</strong></ion-badge>
+      </ion-col>
+      <ion-col col-7>        
+        <ion-badge (click)="monthly()" color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>Ksh 150.00</strong></ion-badge>
+      </ion-col>
+    </ion-row>
+   
+    <hr>
+  
+    <ion-row>
+      <ion-col col-5>
+        <ion-badge (click)="payperitem()" color="goldenrod" style="font-size:1.9rem; color: #7B1FA2;"><strong>Pay Per Item</strong></ion-badge>
+      </ion-col>
+      <ion-col col-7>        
+        <ion-badge (click)="payperitem()" color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>Ksh 50.00 DVD</strong></ion-badge>
+        <ion-badge (click)="payperitem()" color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>Ksh 30.00 Soft</strong></ion-badge>
+      </ion-col>
+    </ion-row>
+
+    -->
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 col-md-4 col-lg-3 *ngFor="let item of subscription">
+        <div class="account" (click)="handleSubscription(item)">
+          <strong><p style="color:#ff812c">{{item.period}}</p></strong>
+          
+          <strong>
+          <p class="countNum">
+            Ksh {{item.amount}}
+          </p>
+          </strong>
+
+          <strong>
+          <p>
+            Ksh {{item.description}}
+          </p>
+          </strong>          
+          <!--<button ion-button block small clear color="faceColor" (click)="handleApply(item)">Apply</button>-->
+        </div>
+        
+      </ion-col>
+
+      <ion-col>
+        <div class="account" (click)="payPerItem()">
+          <strong><p style="color:#ff812c">Pay Per Item</p></strong>
+          <strong><p class="countNum">Ksh 50 (DVD)</p></strong>
+          <strong><p class="countNum">Ksh 30 (USB-OTHER)</p></strong>
+          <strong><p>Pay for what you order. @30/= or 50/= depending on delivery format.</p></strong>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>    
+      
+</ion-content>

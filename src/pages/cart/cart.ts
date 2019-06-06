@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, AlertController, ActionSheetController, Platform, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, AlertController, ActionSheetController, Platform, ToastController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 // import { HomePage } from "../home/home"
 
@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { Http } from "@angular/http"
 import 'rxjs/add/operator/map'
 import { UtilsProvider } from "../../providers/utils/utils"
+import { AuthenticationProvider } from "../../providers/authentication/authentication"
 import { Socket } from 'ng-socket-io';
 // import { Observable } from 'rxjs/Observable';
 
@@ -17,22 +18,29 @@ import { Socket } from 'ng-socket-io';
   templateUrl: 'cart.html',
 })
 export class CartPage {
-	cartlist:any;
-	moviecartlist:any;
-	base_url:any;
-	poster_sizes:any;
-	tmdbConfigImages:any;
-	backdrop_sizes:any;
-	checkout:any;
-	userinfo:any;
-	user:any;
-	connected:any;
-	index:any;
-	APIKEY = "35be3be17f956346becdba89d4f22ca1";
-	users:any;
+	private showTvSeries:any = true
+	private showMovies:any = true
+	private friends:any;
+	private order:any;
+	private cartlist:any;
+	private moviecartlist:any;
+	private base_url:any;
+	private poster_sizes:any;
+	private tmdbConfigImages:any;
+	private backdrop_sizes:any;
+	private checkout:any;
+	private userinfo:any;
+	private user:any;
+	private connected:any;
+	private index:any;
+	private APIKEY = "35be3be17f956346becdba89d4f22ca1";
+	private users:any;
+	private retailers:any;
+	private retailer:any;
 	
 
 	constructor(
+		private loadingCtrl: LoadingController,
 		public navCtrl: NavController, 
 		public navParams: NavParams, 
 		public platform: Platform,
@@ -40,6 +48,7 @@ export class CartPage {
 		public actionsheetCtrl: ActionSheetController,
 		public alertCtrl: AlertController,
 		public toastCtrl:ToastController,
+		private auth: AuthenticationProvider,
 		public utilsProvider: UtilsProvider,
 		public storage: Storage,
 		public socket: Socket, 
@@ -60,16 +69,63 @@ export class CartPage {
 	}
 
 
-	ionViewDidLoad(){		
+	ionViewDidLoad(){
+		// Get retailers
+		this.auth.AllUsers().then((data:any) => {
+			console.log("ALL USERS:",data)
+			this.retailers = data.user;
+		})
+
+		//get friendse
+		this.storage.get('friend')
+		.then((value)=>{
+			this.friends = value
+		})			
 
 
-		//Load user info
-        this.storage.get('user').then((value) => { 
-            this.user = value.phone_number; 
-        });   
+  
 
 		this.cartlist=this.utilsProvider.getCartTitle();
+		console.log("CARTLIST:",this.cartlist)
+
 		this.moviecartlist=this.utilsProvider.getMovieCart()
+
+		this.order = {
+			tvshows:this.cartlist,
+			movies:this.moviecartlist
+		}
+
+		//Load user info
+		this.storage.get('user').then((value) => { 
+			console.log("USER:",value)
+			this.order.phonenumber = value.user.phoneNumber; 
+		}); 
+
+		console.log("ORDERS:",this.order)
+
+		if(Array.isArray(this.cartlist)=== true){
+			console.log(this.cartlist)
+			if(this.cartlist.length <= 0){
+				this.showTvSeries = false
+				console.log("no series")
+			}
+	
+			// if(this.moviecartlist.length <= 0){
+			// 	this.showMovies = false
+			// }
+		}else if(Array.isArray(this.cartlist) === false){
+			this.showTvSeries = false
+		}
+
+		if(Array.isArray(this.moviecartlist) === true){
+			if(this.moviecartlist.length <= 0){
+				this.showMovies = false
+			}
+		}else if(Array.isArray(this.moviecartlist) === false){
+			this.showMovies = false;
+		}
+
+		
 
 		//config
 		this.http.get("https://api.themoviedb.org/3/configuration?api_key=35be3be17f956346becdba89d4f22ca1")
@@ -95,12 +151,14 @@ export class CartPage {
 		let index = cart.indexOf(get)
 		this.utilsProvider.removeFromCart(index)
 		this.utilsProvider.removeFromTitle(index)
+		this.ionViewDidLoad()
 	}
 
 	onDeleteMovie(get){
 		let cart = this.utilsProvider.getMovieCart()
 		let index = cart.indexOf(get)
 		this.utilsProvider.removeFromMovieCart(index)
+		this.ionViewDidLoad()
 	}
 
   	//close movieModal
@@ -123,59 +181,32 @@ export class CartPage {
 				{
 					text:"Place Order",
 					icon: !this.platform.is("ios")?"cash":null,
-					handler:()=>{		
-						//get connected
-						let _connected = this.connected
-						// console.log(_connected)						
-						// console.log("Calling Place Order...")	
+					handler:()=>{	
+						// CHECK STATUS
+						// IF NOT PERIODIC SUBSCRIBER, PERFORM STK PUSH
+						// PLACE ORDER
 
-						this.socket.emit("_activeUsers")
+						// PICK RETAILER
 
-						let _alert = this.alertCtrl.create()
-						_alert.setTitle("Choose Distributor")
+						this.utilsProvider.postMovieTvShowCart(this.order)
+						.then((data:any)=>{
+							console.log("CART SERVER FEEDBACK:",data)
+							// if successful then send notification
+							if(data.success == true){
+								this.socket.emit("orderNotification",({data:data.data}));
+							}
+						})
 
-						for(var key in _connected){
-							_alert.addInput({
-								type:"radio",
-								label:key,
-								value:_connected[key],
-							})
+						const loader: any = this.loadingCtrl.create(
+						{
+							content: 'Please wait while we process your order...' 
 						}
+						);
+						loader.present() 
 
-						_alert.addButton({
-							text:"Cancel",
-							role:"cancel",
-							handler:()=>{
-								this.ionViewDidLoad()
-							}
-						})
-
-						_alert.addButton({
-							text:"Ok",
-							handler:(data)=>{
-								var _movieTvShowCart = {
-									tvshows:this.cartlist,
-									movies:this.moviecartlist,
-									phone_number:this.user,
-									socket:data.socket
-								}
-								// console.log("emitting data to server...")
-								this.socket.emit("add-cart",_movieTvShowCart);
-
-								this.utilsProvider.emptyArray()
-
-								let toast = this.toastCtrl.create({
-									message:"Order Placed",
-									duration:800,
-									position:"middle"
-								})
-								toast.present();								
-							}
-						})
-
-						_alert.present()
-
-
+						setTimeout(() => {
+							loader.dismiss();
+						}, 5000);
 					}
 				},
 				{
@@ -191,5 +222,24 @@ export class CartPage {
 
 		actionSheet.present()
 	}
+
+	cartEmpty(){
+		let toast = this.toastCtrl.create({
+			message:"Cart Empty",
+			duration:800,
+			position:"middle"			
+		})
+
+		toast.present()
+	}
+
+	/*
+	onSelect(data){
+		console.log("RETAILER:",data)
+		this.order.retailer = data
+		this.retailer = data
+		console.log("RETAILER:",this.retailer)
+	}
+	*/
 }
 

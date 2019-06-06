@@ -1,0 +1,20 @@
+<ion-content padding class="no-scroll">
+  <form [formGroup]="signup" (ngSubmit)="handleOTP('OtpPage')">
+    <ion-item>    
+      <ion-input formControlName="userName" placeholder="Username" style="text-align:right; border-radius: 4px;" [(ngModel)]="username" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>    
+      <ion-input formControlName="phoneNumber" placeholder="Phone Number" style="text-align:right; border-radius: 4px;" [(ngModel)]="phoneNumber" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="password" placeholder="Password" style="text-align:right; border-radius: 4px;" [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>  
+
+    <button ion-button block color="popOverBtn" type="submit" [disabled]="!signup.valid">Sign Up</button>
+    
+  </form>
+  <button ion-button block clear color="forestgreen" (click)="handleLogin('LoginPage')">Login</button>
+  
+</ion-content>

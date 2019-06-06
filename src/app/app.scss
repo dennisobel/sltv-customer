@@ -15,6 +15,105 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.imgcard{
+  height:290px;
+}
+
+.bgrnd{
+  background-image: url('../../assets/imgs/binge.png');
+  // background-image: url('../../assets/imgs/iBook.jpg');
+  background-repeat: no-repeat;
+  background-size:cover;        
+}
+
 .no-scroll .scroll-content{
     	overflow: hidden;
+}
+
+.curves{
+	border-radius: 7.5px;
+}  
+
+.app-background{
+	background-color: rgba(189, 188, 188, 0.900);
+}
+
+.app-fade{
+	background-color: rgba(64, 99, 0, 0.274)
+}
+
+// fab labels
+ion-fab {
+    ion-fab-list button[ion-fab] {
+        overflow: visible;
+
+        .label{
+          position: absolute;
+          bottom: 48px;
+          background: rgba(0,0,0,0.7);
+          height: 24px;
+          line-height: 16px;
+          padding-left: 8px;
+          padding-right: 8px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          border-radius: 3px;
+          color: #fff;
+          box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        }    
+
+        .toplabel{
+          position: absolute;
+          top: 48px;
+          background: rgba(0,0,0,0.7);
+          height: 24px;
+          line-height: 16px;
+          padding-left: 8px;
+          padding-right: 8px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          border-radius: 3px;
+          color: #fff;
+          box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.14), 0 4px 5px rgba(0, 0, 0, 0.1);
+        }                 
+    }
+}
+
+
+// search bar
+ion-searchbar{        
+    .searchbar-input-container{            
+        .searchbar-input{
+            border-radius: 20px;
+        }
+    }
+ }
+
+ //alert
+.alertCustomCss{
+    // text color for basic alerts
+    color: color($colors, forestgreen, base); ;
+    background-color: white;
+    overflow: hidden;
+
+
+    button{
+      color: forestgreen !important;
+      background-color: color($colors, blueblack, base) !important;
+    }
+
+    .alert-message { 
+        color: #000000; // text color for confirm alerts
+    }  
+
+    .alert-input{
+        color: black;
+    }
+
+    .alert-wrapper {
+        overflow: hidden;
+        border-radius: 7.5px;
+        border: 1px solid #000000;
+        background-color: color($colors, blueblack, base); // bg color of alert content
+    }      
 }

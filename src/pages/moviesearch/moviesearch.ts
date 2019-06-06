@@ -89,6 +89,3 @@ export class MoviesearchPage {
       this.viewCtrl.dismiss(remove);
   }
 }
-
-
-

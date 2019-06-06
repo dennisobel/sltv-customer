@@ -38,25 +38,38 @@ $colors: (
   plants:     #5c821a,
   strawberry: #cb0000,
   light:      #f4f4f4,
-  dark:       #222,
   blueblack:  #021C1E,
   cadetblue:  #004445,
-  forestgreen:#2E4600,
+  // forestgreen:#2E4600,
+  forestgreen:#800080,
   crimson:    #8d230f,
   overcast:   #f1f1f2,
   warmgrey:   #bcbabe,
-
   bark:       #2e2300,
   seaweed:    #6e6702,
   bronze:     #c05805,
   goldenrod:  #db9501,
-
-  //faded
-
   fadednavy:  #444c5c,
   punch:      #ce5a57,
   oceanbreeze:#78a5a3,
-  warm:       #e1b16a
+  warm:       #e1b16a,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  dividercolor:#BDBDBD,
+  dark:       #222,
+  accent:	  #FF5722,
+  primarytext:#212121,
+  secondarytext:#757575,
+  darkprimarycolor:#7B1FA2,
+  lightprimarycolor:#E1BEE7,
+  primarycolor:#9C27B0,
+  iconsandtext:#FFFFFF,
+  headerclc:#d84315,
+  theme: #1b10c0,
+  popOverBtn: #247e01,
+  resendBtn: #132502,
+  color5:     #383737,
+  gold: #ff812c  
 );
 
 $alert-input-placeholder-color: #2E4600;
@@ -70,6 +83,8 @@ $alert-ios-background:  #ffffff;
 $alert-ios-button-background-color: #795548;
 $alert-ios-button-background-color-activated: #BCAAA4;
 
+// searchbar
+$searchbar-md-input-search-icon-color:forestgreen;
 //alert android
 
 

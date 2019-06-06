@@ -5,18 +5,19 @@
     </button> 
     
      <ion-toolbar>
-        <ion-searchbar [(ngModel)]="searchTerm" (search)="getItems()" placeholder="Search Tv Shows"></ion-searchbar>  
+        <ion-searchbar color="seaweed" [(ngModel)]="searchTerm" (search)="getItems()" placeholder="Search Tv Shows"></ion-searchbar> 
       </ion-toolbar>  
       <ion-buttons end>
+
+      <!--
       <button clear (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
+      -->
+
     </ion-buttons>
-  </ion-navbar>  
-</ion-header>
-
-<ion-content no-padding hideheader [header]="head"> 
-
+  </ion-navbar> 
+  
   <ion-toolbar color="forestgreen" [(ngModel)]="listmovies">
       <ion-segment color="blueblack" style="font-size:1.3rem" no-border-bottom>
         <ion-segment-button value="popular">
@@ -27,52 +28,56 @@
         </ion-segment-button>
       </ion-segment>
   </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding hideheader [header]="head" class="app-background"> 
+
+
   
   <div [ngSwitch]="listmovies">
     <div *ngSwitchCase="'popular'">
       <ion-list *ngFor="let get of popularTvShows">
-        <ion-card (click)="seasonsModal(get)">
+        <ion-card (click)="seasonsModal(get)" class="curves">
           <ion-row>
             <ion-col col-5>
-              <img [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
+              <img class="curves" [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
             </ion-col>
             <ion-col col-7>
-              <p style="font-size:1.2rem; color: #db9501;"><strong>Premier: {{get.first_air_date}}</strong></p>
-              <p color="forestgreen" style="font-size:1.2rem; color: #db9501;"><strong>Popularity: {{get.popularity}}</strong></p>
+              <p style="font-size:1.2rem; color: #2E4600;"><strong>Premier: {{get.first_air_date}}</strong></p>
+              <p color="forestgreen" style="font-size:1.2rem; color: #2E4600;"><strong>Popularity: {{get.popularity}}</strong></p>
             </ion-col>
           </ion-row>
           
           <ion-card-content>
             <ion-card-title>
-              <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+              <p style="color:#2E4600;"><strong>{{get.name}}</strong></p>
               <hr>              
             </ion-card-title>
-            <p style="font-size:1rem; color: #db9501;"><strong>{{get.overview}}</strong></p>
+            <p style="font-size:1rem; color: #000000;"><strong>{{get.overview}}</strong></p>
           </ion-card-content>
         </ion-card>
       </ion-list>
-    </div>
-    
+    </div>    
 
     <div *ngSwitchCase="'toprated'">
       <ion-list *ngFor="let get of topratedTvShows">
-        <ion-card (click)="seasonsModal(get)">
+        <ion-card (click)="seasonsModal(get)" class="curves">
           <ion-row>
             <ion-col col-5>
-              <img [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
+              <img class="curves" [(ngModel)]="tmdbConfigImages" src={{tmdbConfigImages.base_url}}{{tmdbConfigImages.poster_sizes[6]}}{{get.poster_path}} ngDefaultControl>
             </ion-col>
             <ion-col col-7>
-              <p style="font-size:1.2rem; color: #db9501;"><strong>Premier:{{get.first_air_date}}</strong></p>
+              <p style="font-size:1.2rem; color: #2E4600;"><strong>Premier:{{get.first_air_date}}</strong></p>
               <ion-badge color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>{{get.vote_average}}</strong></ion-badge>
             </ion-col>
           </ion-row>
           
           <ion-card-content>
             <ion-card-title>
-              <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+              <p style="color:#2E4600;"><strong>{{get.name}}</strong></p>
               <hr>              
             </ion-card-title>
-            <p style="font-size:1rem; color: #db9501;"><strong>{{get.overview}}</strong></p>
+            <p style="font-size:1rem; color: #000000;"><strong>{{get.overview}}</strong></p>
           </ion-card-content>
         </ion-card>
       </ion-list>
@@ -84,8 +89,26 @@
       
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
+  <!--
   <ion-fab right bottom>
       <button ion-fab mini color="forestgreen" (click)="scrollToTop()"><ion-icon name="arrow-dropup"></ion-icon></button>
   </ion-fab>
+  -->
+  <ion-fab center bottom>
+      <button class="footer title-bar" ion-fab color="blueblack">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <ion-fab-list side="right">
+        <button (click)="scrollToTop()" class="footer title-bar" ion-fab color="fadednavy">
+          <ion-icon name="arrow-dropup"></ion-icon>
+          <div class="label">To Top</div>
+        </button>
+      </ion-fab-list>
+      <ion-fab-list side="left">   
+        <button (click)="logout()" class="footer title-bar" ion-fab color="fadednavy">
+          <ion-icon name="md-log-out"></ion-icon>
+          <div class="label">Logout</div>
+        </button>
+       </ion-fab-list>      
+    </ion-fab> 
 </ion-content> 

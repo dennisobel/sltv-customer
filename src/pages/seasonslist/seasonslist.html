@@ -1,43 +1,73 @@
-<ion-content no-padding> 
-
+<ion-header>
   <ion-toolbar color="forestgreen">      
     <ion-title text-center>{{title}}</ion-title>       
-  </ion-toolbar>   
-  
+  </ion-toolbar> 
+</ion-header>
+
+<ion-content no-padding class="app-background"> 
   <ion-list *ngFor="let get of seasons">
-    <ion-card>
+    <ion-card class="curves">
       <ion-row>
         <ion-col col-4>
-          <img [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
+          <img class="curves" [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
         </ion-col>
         <ion-col col-8>
-          <p style="color:#021C1E;"><strong>{{title}} : {{get.season_number + 1}}</strong></p>
-          <hr> 
-          <p style="font-size:1.3rem; color: #db9501;"><strong>Premier:{{get.air_date}}</strong></p>
-          <p color="forestgreen" style="font-size:1.3rem; color: #db9501;"><strong>Episodes : {{get.episode_count}}</strong></p>
+          <ion-row>
+            <ion-col col-9>
+              <!--<p style="color:#2E4600;"><strong>{{title}} : {{3.season_number + 1}}</strong></p>-->
+              <p style="font-size:1.3rem; color: #2E4600;"><strong>Premier:{{get.air_date}}</strong></p>
+              <p color="forestgreen" style="font-size:1.3rem; color: #2E4600;"><strong>Episodes : {{get.episode_count}}</strong></p>
+            </ion-col>
+          </ion-row>
+
           <ion-row>
             <ion-col col-6>
-              <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToCart(get)"><ion-icon name="basket">Cart</ion-icon></button>
+              <button style="font-size:1.2rem; color:#2E4600;" color="dark" ion-button outline block (click)="addToCart(get,title)"><ion-icon name="md-basket">Cart</ion-icon></button>
             </ion-col>
+            <!--
             <ion-col col-6>
-              <button style="font-size:1.2rem; color:#2E4600;" color="strawberry" ion-button outline block (click)="addToTvCollection({data:get,title:title})"><ion-icon name="albums">Collection</ion-icon></button>
+              <button style="font-size:1.2rem; color:#2E4600;" color="strawberry" ion-button outline block (click)="addToTvCollection({data:get,title:title})"><ion-icon name="md-albums">Collection</ion-icon></button>
             </ion-col>
+            -->
           </ion-row>
         </ion-col>
       </ion-row>
+      <!--
+      <div id="request" >
+         <button style="font-size:1.2rem; color:#2E4600;" color="strawberry" ion-button outline block (click)="addToTvCollection({data:get,title:title})"><ion-icon name="albums">Request</ion-icon></button>
+      </div> 
+      -->
     </ion-card>
   </ion-list>  
 
-  <ion-fab left top>
-  	<button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+  <ion-fab left top edge>
+  	<button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="md-close"></ion-icon></button>
 	</ion-fab>
 
-  <ion-fab right top>
-    <button ion-fab mini color="dark" (click)="viewCart()"><ion-icon name="cart"></ion-icon></button>
-  </ion-fab>
+  <ion-fab center bottom>
+    <button class="footer title-bar" ion-fab color="blueblack">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="right">
+      <button (click)="viewCart()" class="footer title-bar" ion-fab color="fadednavy">
+        <ion-icon name="md-cart"></ion-icon>
+        <div class="label">Cart</div>
+      </button>
+    </ion-fab-list>
 
-  <ion-fab right bottom>
-      <button ion-fab mini color="forestgreen" (click)="scrollToTop()"><ion-icon name="arrow-dropup"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button (click)="scrollToTop()" class="footer title-bar" ion-fab color="fadednavy">
+        <ion-icon name="arrow-dropup"></ion-icon>
+        <div class="label">To Top</div>
+      </button>
+    </ion-fab-list>
+
+    <ion-fab-list side="left">   
+      <button (click)="logout()" class="footer title-bar" ion-fab color="fadednavy">
+        <ion-icon name="md-log-out"></ion-icon>
+        <div class="label">Logout</div>
+      </button>
+     </ion-fab-list>      
   </ion-fab>
 
 </ion-content>

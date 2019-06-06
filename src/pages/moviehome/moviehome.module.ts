@@ -7,7 +7,7 @@ import { MoviehomePage } from './moviehome';
     MoviehomePage,
   ],
   imports: [
-    IonicPageModule.forChild(MoviehomePage),
+    IonicPageModule.forChild(MoviehomePage)
   ],
 })
 export class MoviehomePageModule {}

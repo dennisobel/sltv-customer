@@ -1,34 +1,47 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController, NavParams, ToastController } from 'ionic-angular';
 import { UtilsProvider } from "../../providers/utils/utils";
 import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi";
 import { TvapiProvider } from "../../providers/tvapi/tvapi";
 import { ItemSliding } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { HomePage } from "../home/home"
+import { LoginPage } from '../login/login';
+import { AuthProvider } from '../../providers/auth/auth';
+import { Socket } from 'ng-socket-io';
 
 @Component({
   selector: 'page-mycollection',
   templateUrl: 'mycollection.html',
 })
 export class MycollectionPage{
+	@ViewChild(Content) content: Content;
+
 	private tvcollection:any;
 	private moviecollection:any;
 	private configuration:any;
 	private _userdata:number;
 	private collection = "tv"
 
+
 	constructor(
 		public navCtrl: NavController, 
 		public navParams: NavParams,
 		public utilsProvider : UtilsProvider,
 		public tmdbApiProvider : TmdbapiProvider,
-		public tvApiProvider : TvapiProvider,	
+		public tvApiProvider : TvapiProvider,
+		public authService: AuthProvider,	
 		public toastCtrl:ToastController,
-		public storage: Storage	
-	){}
+		public storage: Storage,
+		public socket: Socket, 	
+	){
+		this.socket.on("pickup",(data)=>{
+			console.log(data)
+		})
+	}
 
 	ionViewDidLoad(){
+	//pickup
 
   	//get user data
   		(()=>{
@@ -68,6 +81,7 @@ export class MycollectionPage{
 		this.utilsProvider.gettv(_id)
 		.subscribe((tvdata)=>{
 			this.tvcollection = tvdata.data
+			console.log(this.tvcollection)
 			this.tvalert()				
 		})			
 	}
@@ -119,5 +133,19 @@ export class MycollectionPage{
 			guide.present();					
 		}		
 	}	
+
+	logout(){
+		this.authService.logout()
+		this.navCtrl.setRoot(LoginPage)
+	}
+
+	doInfinite(infiniteScroll){
+		console.log(infiniteScroll)
+	}
+
+	scrollToTop(){
+		this.content.scrollToTop();
+	}
+
 
 }

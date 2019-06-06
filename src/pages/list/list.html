@@ -1,35 +1,37 @@
-<ion-content>
+<ion-header>
   <ion-toolbar color="forestgreen">      
     <ion-title text-center>Tv Search Results</ion-title>       
-  </ion-toolbar>
+  </ion-toolbar> 
+</ion-header>
 
+<ion-content class="app-background">
   <ion-list *ngFor="let get of search_results">
-    <ion-card (click)="seasonsModal(get)" (press)="addToPool(get)">    
+    <ion-card class="curves" (click)="seasonsModal(get)" (press)="addToPool(get)">    
       <ion-row>
         <ion-col col-4>
           <div>
-            <img [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
+            <img class="curves" [(ngModel)]="tmdbConfigImages" src={{base_url}}{{poster_sizes}}{{get.poster_path}} ngDefaultControl>
           </div>
         </ion-col>
         <ion-col col-8>
           <div>
-            <p style="font-size:1.2rem; color: #db9501;"><strong>Premier:{{get.first_air_date}}</strong></p>
+            <p style="font-size:1.2rem; color: #2E4600;"><strong>Premier:{{get.first_air_date}}</strong></p>
             <ion-badge color="forestgreen" style="font-size:1.9rem; color: #db9501;"><strong>{{get.vote_average}}</strong></ion-badge>
           </div>
         </ion-col>
       </ion-row>
       <ion-card-content>
         <ion-card-title>
-          <p style="color:#021C1E;"><strong>{{get.name}}</strong></p>
+          <p style="color:#2E4600;"><strong>{{get.name}}</strong></p>
           <hr>              
         </ion-card-title>
-        <p style="font-size:1rem; color: #db9501;"><strong>{{get.overview}}</strong></p>
+        <p style="font-size:1rem; color: #000000;"><strong>{{get.overview}}</strong></p>
       </ion-card-content>
     </ion-card>  
   </ion-list>
 
-  <ion-fab left top>
-    <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+  <ion-fab left top edge>
+    <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="md-close"></ion-icon></button>
   </ion-fab>
 </ion-content>
 
