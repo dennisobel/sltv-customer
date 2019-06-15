@@ -134,7 +134,7 @@ export class SubscriptionPage {
         content: 'Please wait while we log you in...'
       }
     );
-    loader.present() 
+    // loader.present() 
 
     const subscriptionData:any = {
       subscriptionType : data.period,
@@ -153,7 +153,7 @@ export class SubscriptionPage {
     this.subProvider.Subscribe(subscriptionData).then((data:any)=>{      
       if(data.success == true && data.data.status == "active"){
         this.navCtrl.setRoot(HomePage,{data}).then(()=>{
-          loader.dismiss() 
+          // loader.dismiss() 
         })
       }
     })     

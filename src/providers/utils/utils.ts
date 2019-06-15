@@ -3,7 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { TvapiProvider } from "../../providers/tvapi/tvapi"
 import 'rxjs/add/operator/map';
-import { resolve } from 'path';
+// import { resolve } from 'path';
 
 @Injectable()
 export class UtilsProvider {	

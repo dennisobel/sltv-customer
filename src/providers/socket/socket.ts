@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ng-socket-io';
 import { AlertController} from 'ionic-angular';
-import { resolve } from 'dns';
+// import { resolve } from 'dns';
 import { rejects } from 'assert';
 
 @Injectable()

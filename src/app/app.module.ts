@@ -19,6 +19,9 @@ import { ProfilePage } from '../pages/profile/profile';
 import { NewcartPage } from '../pages/newcart/newcart';
 import { FriendcollectionPage } from '../pages/friendcollection/friendcollection';
 import { OtpPage } from '../pages/otp/otp';
+import { StorePage } from '../pages/store/store';
+import { PrefPage } from '../pages/pref/pref';
+import { StoreviewPage } from '../pages/storeview/storeview';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -60,6 +63,9 @@ import { SubscriptionProvider } from '../providers/subscription/subscription';
     ProfilePage,
     NewcartPage,
     FriendcollectionPage,
+    StorePage,
+    PrefPage,
+    StoreviewPage,
     HideHeaderDirective
   ],
   imports: [
@@ -85,7 +91,10 @@ import { SubscriptionProvider } from '../providers/subscription/subscription';
     LoginPage,    
     SeasonslistPage,
     ProfilePage,
-    FriendcollectionPage
+    FriendcollectionPage,
+    StorePage,
+    PrefPage,
+    StoreviewPage
   ],
   providers: [
     StatusBar,

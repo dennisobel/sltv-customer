@@ -15,6 +15,7 @@ import { TvapiProvider } from "../../providers/tvapi/tvapi"
 import { TmdbapiProvider } from "../../providers/tmdbapi/tmdbapi"
 import { SocketProvider } from "../../providers/socket/socket";
 import { Socket } from 'ng-socket-io';
+import { CartPage } from '../cart/cart';
 
 @IonicPage()
 @Component({
@@ -196,5 +197,13 @@ export class HomePage {
 	scrollToTop(){
 		this.content.scrollToTop();
 	}
+
+	openCart(){
+		let cartModal = this.modalCtrl.create(CartPage,{from:'home'})
+		cartModal.onDidDismiss(data=>{
+			// console.log(data)
+		})
+		cartModal.present()
+	} 	
 }
 

@@ -1,8 +1,16 @@
 <ion-header>
-  <ion-toolbar color="forestgreen">      
-    <ion-title text-center>{{title}}</ion-title>       
-  </ion-toolbar> 
-</ion-header>
+  <ion-navbar color="forestgreen">
+         
+      <ion-title text-center>{{title}}</ion-title>       
+    
+
+    <ion-buttons end >    
+        <button ion-button (click)="openCart()">
+          <ion-icon name="md-cart"></ion-icon>
+        </button>       
+    </ion-buttons>  
+  </ion-navbar> 
+</ion-header> 
 
 <ion-content no-padding class="app-background"> 
   <ion-list *ngFor="let get of seasons">
@@ -45,6 +53,11 @@
 	</ion-fab>
 
   <ion-fab center bottom>
+    <button (click)="scrollToTop()" class="footer title-bar" ion-fab color="fadednavy">
+      <ion-icon name="arrow-dropup"></ion-icon>
+      <!--<div class="label">To Top</div>-->
+    </button>
+    <!--
     <button class="footer title-bar" ion-fab color="blueblack">
       <ion-icon name="add"></ion-icon>
     </button>
@@ -67,7 +80,8 @@
         <ion-icon name="md-log-out"></ion-icon>
         <div class="label">Logout</div>
       </button>
-     </ion-fab-list>      
+    </ion-fab-list>  
+    -->    
   </ion-fab>
 
 </ion-content>

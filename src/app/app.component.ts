@@ -9,6 +9,8 @@ import { LoginPage } from '../pages/login/login';
 import { StartPage } from '../pages/start/start';
 import { MycollectionPage } from '../pages/mycollection/mycollection';
 import { ProfilePage } from '../pages/profile/profile';
+import { StorePage } from '../pages/store/store';
+import { CartPage } from '../pages/cart/cart';
 import {SocketProvider} from '../providers/socket/socket'
 
 @Component({
@@ -37,6 +39,8 @@ export class MyApp {
       { title: 'Movies', icon:'film', component: MoviehomePage },
       { title: 'My Collection', icon:'albums', component: MycollectionPage },
       { title: 'Profile', icon:'contact', component: ProfilePage },
+      { title: 'Cart', icon:'cart', component: CartPage},
+      // { title: 'Pick Store', icon:'business', component: StorePage}
     ];
 
   }
@@ -53,6 +57,6 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component,{from:'apphtml'});
   }
 }

@@ -1,7 +1,7 @@
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Injectable } from '@angular/core';
-import { resolve } from 'dns'; 
+// import { resolve } from 'dns'; 
 
 @Injectable()
 export class SubscriptionProvider {

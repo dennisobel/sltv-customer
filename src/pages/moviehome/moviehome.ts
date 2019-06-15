@@ -111,8 +111,8 @@ export class MoviehomePage {
 		//cartModal.present()
 	}
 
-	viewCart(){
-		let cartModal = this.modalCtrl.create(CartPage)
+	openCart(){
+		let cartModal = this.modalCtrl.create(CartPage,{from:'moviehome'})
 		cartModal.onDidDismiss(data=>{
 			// console.log(data)
 		})

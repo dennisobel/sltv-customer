@@ -1,0 +1,91 @@
+<ion-header>  
+  <ion-navbar color="forestgreen">    
+      <ion-toolbar>
+        <ion-searchbar color="seaweed" [(ngModel)]="searchStore" (search)="getStore()" placeholder="Search Store"></ion-searchbar> 
+      </ion-toolbar>  
+  </ion-navbar> 
+
+  <ion-toolbar color="forestgreen" [(ngModel)]="store">
+    <ion-segment color="blueblack" style="font-size:1.3rem" no-border-bottom>
+      <ion-segment-button value="home">
+        Home Delivery
+      </ion-segment-button>
+      <ion-segment-button value="pick">
+        Pre-order & Pick
+      </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>  
+</ion-header>
+
+<ion-content padding>
+  <div [ngSwitch]="store">
+      <div *ngSwitchCase="'home'">
+        <ion-list *ngFor="let get of homeDel">    
+          <ion-item-sliding>
+            <ion-item>          
+              <ion-thumbnail item-start>
+                <img class="curves" src="/assets/imgs/user.png" ngDefaultControl> 
+              </ion-thumbnail>          
+              <p style="color:#021C1E;"><strong>{{get.userName}}</strong></p> 
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button color="strawberry" (click)="onSelect(get)">
+                <ion-icon name="navigate"></ion-icon>
+              </button>
+              <button ion-button color="blueblack" (click)="onView(get)">
+                <ion-icon name="eye"></ion-icon>
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>      
+        </ion-list>
+      </div>
+      <div *ngSwitchCase="'pick'">
+        <ion-list *ngFor="let get of orderNPick">    
+          <ion-item-sliding>
+            <ion-item>          
+              <ion-thumbnail item-start>
+                <img class="curves" src="/assets/imgs/user.png" ngDefaultControl> 
+              </ion-thumbnail>          
+              <p style="color:#021C1E;"><strong>{{get.userName}}</strong></p> 
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button color="strawberry" (click)="onSelect(get)">
+                <ion-icon name="navigate"></ion-icon>
+              </button>
+              <button ion-button color="blueblack" (click)="onView(get)">
+                <ion-icon name="eye"></ion-icon>
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>      
+        </ion-list>
+      </div>
+  </div>
+  <!--
+  <ion-list *ngFor="let store of retailers">    
+      <ion-item-sliding>
+        <ion-item>          
+          <ion-thumbnail item-start>
+            <img class="curves" src="/assets/imgs/user.png" ngDefaultControl> 
+          </ion-thumbnail>          
+          <p style="color:#021C1E;"><strong>{{store.userName}}</strong></p> 
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="strawberry" (click)="onSelect(store)">
+            <ion-icon name="navigate"></ion-icon>
+          </button>
+          <button ion-button color="blueblack" (click)="onView(store)">
+            <ion-icon name="eye"></ion-icon>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>      
+  </ion-list>
+  -->
+
+  <ion-fab left top edge>
+    <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="md-close"></ion-icon></button>
+  </ion-fab>  
+
+  <ion-fab left bottom>
+      <button ion-fab mini color="overcast" (click)="openMenu()"><ion-icon name="menu"></ion-icon></button>
+  </ion-fab>  
+</ion-content>

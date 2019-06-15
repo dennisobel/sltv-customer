@@ -1,7 +1,11 @@
 <ion-header>
-  <ion-toolbar color="forestgreen">      
-    <ion-title text-center>Cart</ion-title>       
-  </ion-toolbar> 
+  <ion-navbar color="forestgreen">
+      <button ion-button show menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button> 
+           
+        <ion-title text-center>Cart</ion-title>       
+  </ion-navbar>    
 </ion-header>
 
 <ion-content padding class="app-background">   
@@ -66,10 +70,12 @@
   </ion-select>
 </ion-item> 
 -->
+<div *ngIf="close == true">
+  <ion-fab left top edge>
+      <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="md-close"></ion-icon></button>
+  </ion-fab>
+</div>
 
-<ion-fab left top edge>
-    <button ion-fab mini color="forestgreen" (click)="onClose()"><ion-icon name="md-close"></ion-icon></button>
-</ion-fab>
 <ion-fab left bottom>
     <button ion-fab mini color="overcast" (click)="openMenu()"><ion-icon name="menu"></ion-icon></button>
 </ion-fab>

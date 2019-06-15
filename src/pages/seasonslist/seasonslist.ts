@@ -350,8 +350,8 @@ this.http.get("https://api.themoviedb.org/3/tv/"+this.id+"?api_key="+this.APIKEY
 	}
 
 
-	viewCart(){
-		let cartModal = this.modalCtrl.create(CartPage)
+	openCart(){
+		let cartModal = this.modalCtrl.create(CartPage,{from:'seasonslist'})
 		cartModal.onDidDismiss(data=>{
 			// console.log(data)
 		})
@@ -366,5 +366,7 @@ this.http.get("https://api.themoviedb.org/3/tv/"+this.id+"?api_key="+this.APIKEY
 	scrollToTop(){
 		this.content.scrollToTop();
 	}
+
+
 
 }

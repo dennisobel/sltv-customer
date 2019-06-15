@@ -1,5 +1,15 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, AlertController, ActionSheetController, Platform, ToastController, LoadingController } from 'ionic-angular';
+import { 
+	NavController, 
+	NavParams, 
+	ViewController, 
+	AlertController, 
+	ActionSheetController, 
+	PopoverController, 
+	ModalController,
+	Platform, 
+	ToastController, 
+	LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 // import { HomePage } from "../home/home"
 
@@ -9,6 +19,7 @@ import 'rxjs/add/operator/map'
 import { UtilsProvider } from "../../providers/utils/utils"
 import { AuthenticationProvider } from "../../providers/authentication/authentication"
 import { Socket } from 'ng-socket-io';
+import { StorePage } from '../store/store';
 // import { Observable } from 'rxjs/Observable';
 
 
@@ -37,9 +48,13 @@ export class CartPage {
 	private users:any;
 	private retailers:any;
 	private retailer:any;
+	private close:Boolean = false;
+	private menu: Boolean = false;
 	
 
 	constructor(
+		private modalCtrl: ModalController,
+		private popoverCtrl: PopoverController,
 		private loadingCtrl: LoadingController,
 		public navCtrl: NavController, 
 		public navParams: NavParams, 
@@ -70,6 +85,15 @@ export class CartPage {
 
 
 	ionViewDidLoad(){
+		// Menu
+		if(this.navParams.get('from') == 'apphtml'){
+			this.menu = true;
+		}		
+		
+		// From
+		if(this.navParams.get('from') == 'seasonslist' || this.navParams.get('from') == 'moviehome' || this.navParams.get('from') == 'home'){
+			this.close = true;
+		}
 		// Get retailers
 		this.auth.AllUsers().then((data:any) => {
 			console.log("ALL USERS:",data)
@@ -101,6 +125,13 @@ export class CartPage {
 			this.order.phonenumber = value.user.phoneNumber; 
 		}); 
 
+		// Get Store
+		/*
+		this.storage.get('store').then((value)=>{
+			console.log("VALUE:",value)
+			this.order.retailer = value.userName
+		})
+		*/
 		console.log("ORDERS:",this.order)
 
 		if(Array.isArray(this.cartlist)=== true){
@@ -178,16 +209,11 @@ export class CartPage {
 			title: "Cart Actions",
 			cssClass: 'action-sheets-basic-page',
 			buttons:[
+				/*
 				{
-					text:"Place Order",
+					text:"Place & Collect Order",
 					icon: !this.platform.is("ios")?"cash":null,
-					handler:()=>{	
-						// CHECK STATUS
-						// IF NOT PERIODIC SUBSCRIBER, PERFORM STK PUSH
-						// PLACE ORDER
-
-						// PICK RETAILER
-
+					handler:()=>{							
 						this.utilsProvider.postMovieTvShowCart(this.order)
 						.then((data:any)=>{
 							console.log("CART SERVER FEEDBACK:",data)
@@ -210,11 +236,26 @@ export class CartPage {
 					}
 				},
 				{
+					text:"Home Delivery",
+					icon: !this.platform.is("ios")?"cash":null,
+					handler: ()=>{
+
+					}
+				},
+				*/
+				{
+					text:"Pick Store",
+					icon: !this.platform.is("ios")?"home":null,
+					handler: () => {
+						this.onStore({order:this.order})
+					}
+				},
+				{
 					text: 'Cancel',
 			        role: 'cancel', 
 			        icon: !this.platform.is('ios') ? 'close' : null,
 			        handler:()=>{
-			        	// console.log("Cancel Clicked")
+						// console.log("Cancel Clicked")						
 			        }
 		        }
 			]
@@ -233,13 +274,29 @@ export class CartPage {
 		toast.present()
 	}
 
-	/*
-	onSelect(data){
-		console.log("RETAILER:",data)
-		this.order.retailer = data
-		this.retailer = data
-		console.log("RETAILER:",this.retailer)
+	onStore(data){
+		// this.presentPopover(StorePage)
+		this.modalCtrl.create(StorePage,data).present()
 	}
-	*/
+
+	presentPopover(page) {
+		let ev = {
+		  target : {
+			getBoundingClientRect : () => {
+			  return {
+				top: '100', left:'100'
+			  };
+			}
+		  }
+		};
+		let popover = this.popoverCtrl.create(
+		  page,
+		  {ev},
+		  {cssClass: 'alertCustomCss',showBackdrop: true},
+	  )
+		popover.present({
+		  // ev: myEvent
+		})
+	  }	
 }
 
