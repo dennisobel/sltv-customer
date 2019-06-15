@@ -31,6 +31,24 @@ export class UtilsProvider {
 		deletemessage:"http://localhost:4000/messages/deletemessage/"
 	}
 
+	private online = {
+		createcart:"https://genieinmypocket.herokuapp.com/createcart",
+		getcart:"https://genieinmypocket.herokuapp.com/cart/getcart", 
+		getcartbyid:"https://genieinmypocket.herokuapp.com/cart/getcartbyid/",
+		deletecartbyid:"https://genieinmypocket.herokuapp.com/cart/deletecartbyid/",		
+		createtv:"https://genieinmypocket.herokuapp.com/tv/createtv",
+		gettv:"https://genieinmypocket.herokuapp.com/tv/gettv/",
+		deletetv:"https://genieinmypocket.herokuapp.com/tv/deletetv/",
+		createmovie:"https://genieinmypocket.herokuapp.com/movies/createmovie",
+		getmovie:"https://genieinmypocket.herokuapp.com/movies/getmovie/",
+		deletemovie:"https://genieinmypocket.herokuapp.com/movies/deletemovie/",
+		createmessage:"https://genieinmypocket.herokuapp.com/messages/createmessage/",
+		getmessage:"https://genieinmypocket.herokuapp.com/messages/getmessage/",
+		getmessages:"https://genieinmypocket.herokuapp.com/messages/getmessages/",
+		deletemessage:"https://genieinmypocket.herokuapp.com/messages/deletemessage/"
+	}
+	
+
 	constructor(
 		public http: Http,
 		public storage: Storage,
@@ -113,7 +131,7 @@ export class UtilsProvider {
 	      	headers.append("Accept","application/json");
 	  		headers.append("Content-Type", "application/json");
 
-	  		this.http.get(this.path.getcart)
+	  		this.http.get(this.online.getcart)
 	  		.subscribe(res => {
 	  			resolve(res.json());
 	  			// console.log(res.json().data)
@@ -125,13 +143,13 @@ export class UtilsProvider {
 
 	//get cart by id
 	getCartById(phone_number){	  		
-  		return this.http.get(this.path.getcartbyid + phone_number)	
+  		return this.http.get(this.online.getcartbyid + phone_number)	
   		.map(res=>res.json())		
 	}
 
 	//delete cart by id
 	delCartById(phone_number){
-		return this.http.delete(this.path.deletecartbyid + phone_number)
+		return this.http.delete(this.online.deletecartbyid + phone_number)
 		.map(res => res.json())
 	}
 
@@ -142,18 +160,18 @@ export class UtilsProvider {
 		headers.append("Accept","application/json")
 		headers.append("Content-Type","application/json")
 
-		return this.http.post(this.path.createmessage, data, {headers:headers})		
+		return this.http.post(this.online.createmessage, data, {headers:headers})		
 		.map(res => res.json())
 	}
 
 	//get message
 	getmessage(phone_number){
-		return this.http.get(this.path.getmessage + phone_number)
+		return this.http.get(this.online.getmessage + phone_number)
 		.map(res => res.json())
 	}
 
 	getmessages(){
-		return this.http.get(this.path.getmessages)
+		return this.http.get(this.online.getmessages)
 		.map(res=>res.json())
 	}
 
@@ -163,24 +181,24 @@ export class UtilsProvider {
 		headers.append("Accept","application/json")
 		headers.append("Content-Type","application/json")
 
-		return this.http.post(this.path.createtv, data, {headers:headers})
+		return this.http.post(this.online.createtv, data, {headers:headers})
 		.map(res => res.json())
 	}
 
 	//get tv collection
 	gettv(_id){
 		let _tvid;
-		return this.http.get(this.path.gettv + _id)
+		return this.http.get(this.online.gettv + _id)
 		.map(res => res.json())
 	}
 
 	//delete tv
 	deletetv(_id){
-		// return this.http.delete(this.path.deletetv + _id)
+		// return this.http.delete(this.online.deletetv + _id)
 		// .map(res => res.json())
 
 		return new Promise((resolve,reject)=>{
-			this.http.delete(this.path.deletetv + _id)
+			this.http.delete(this.online.deletetv + _id)
 			.subscribe(res=>{
 				resolve(res.json())
 			},(err)=>{
@@ -195,21 +213,21 @@ export class UtilsProvider {
 		headers.append("Accept","application/json")
 		headers.append("Content-Type","application/json")
 
-		return this.http.post(this.path.createmovie, data, {headers:headers})
+		return this.http.post(this.online.createmovie, data, {headers:headers})
 		.map(res => res.json())
 	}	
 
 	//get movie collection
 	getmovie(_id){
 		let _tvid;
-		return this.http.get(this.path.getmovie + _id)
+		return this.http.get(this.online.getmovie + _id)
 		.map(res => res.json())
 	}	
 
 	//delete movie
 	deletemovie(_id){
 		return new Promise((resolve,reject)=>{
-			this.http.delete(this.path.deletemovie + _id)
+			this.http.delete(this.online.deletemovie + _id)
 			.subscribe(res=>{
 				resolve(res.json())
 			},(err)=>{
@@ -291,7 +309,7 @@ export class UtilsProvider {
 			headers.append("Accept","application/json");
 			headers.append("Content-Type", "application/json");
 			
-			this.http.post(this.path.createcart, JSON.stringify(data),{headers:headers})
+			this.http.post(this.online.createcart, JSON.stringify(data),{headers:headers})
 			.subscribe((res)=>{
 				resolve(res.json())
 			},(err)=>{
