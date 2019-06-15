@@ -24,8 +24,8 @@ import { PrefPage } from '../pages/pref/pref';
 import { StoreviewPage } from '../pages/storeview/storeview';
 
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+// import { StatusBar } from '@ionic-native/status-bar';
+// import { SplashScreen } from '@ionic-native/splash-screen';
 import { HideHeaderDirective } from '../directives/hideheader/hideheader';
 import { TmdbapiProvider } from '../providers/tmdbapi/tmdbapi';
 import { TvapiProvider } from '../providers/tvapi/tvapi';
@@ -97,8 +97,8 @@ import { SubscriptionProvider } from '../providers/subscription/subscription';
     StoreviewPage
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
+    // StatusBar,
+    // SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     TmdbapiProvider,
     TvapiProvider,
